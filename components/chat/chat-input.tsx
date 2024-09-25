@@ -15,6 +15,7 @@ import { EmojiPicker } from "@/components/emoji-picker";
 
 interface ChatInputProps {
   apiUrl: string;
+  member: any;
   query: Record<string, any>;
   name: string;
   type: "conversation" | "channel";
@@ -26,6 +27,7 @@ const formSchema = z.object({
 
 export const ChatInput: React.FC<ChatInputProps> = ({
   apiUrl,
+  member,
   query,
   name,
   type,
@@ -48,7 +50,12 @@ export const ChatInput: React.FC<ChatInputProps> = ({
         query,
       });
 
-      await axios.post(url, values);
+      // Pass the member.id as a header in the request
+      await axios.post(url, values, {
+        headers: {
+          "x-user-id": member.id, // Include the member ID here
+        },
+      });
 
       form.reset();
     } catch (error) {
@@ -76,14 +83,12 @@ export const ChatInput: React.FC<ChatInputProps> = ({
                   <Input
                     disabled={isLoading}
                     className="px-14 py-6 bg-zinc-200/90 dark:bg-zinc-700/75 border-none border-0 focus-visible:ring-0 focus-visible:ring-offset-0 text-zinc-600 dark:text-zinc-200"
-                    placeholder={`Message ${
-                      type === "conversation" ? '' : "#"
-                    }${name}`}
+                    placeholder={`Message ${type === "conversation" ? '' : "#"}${name}`}
                     {...field}
                   />
                   <div className="absolute top-8 right-8">
                     <EmojiPicker 
-                      onChange={(emoji: string)=> field.onChange(`${field.value} ${emoji}`)}
+                      onChange={(emoji: string) => field.onChange(`${field.value} ${emoji}`)}
                     />
                   </div>
                 </div>

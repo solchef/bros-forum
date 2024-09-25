@@ -1,0 +1,160 @@
+/* General Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    background: radial-gradient(circle, #0a0f25, #090b1a);
+    color: white;
+    overflow: hidden;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    background-color: #141a2b;
+}
+
+h1 {
+    font-size: 24px;
+    color: #ffffff;
+}
+
+.search-bar input {
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #333;
+    color: white;
+}
+
+/* Fountain Section */
+.forum-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+}
+
+.fountain {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background-color: #2d3a59;
+    box-shadow: 0 0 30px 10px rgba(0, 0, 255, 0.5);
+    animation: pulse 2s infinite;
+}
+
+.rings {
+    position: absolute;
+    border-radius: 50%;
+    border: 5px solid;
+    animation: spin 10s infinite linear;
+}
+
+.public-bros {
+    border-color: rgba(255, 255, 255, 0.2);
+    width: 250px;
+    height: 250px;
+    top: -25px;
+    left: -25px;
+}
+
+.vip-bros {
+    border-color: rgba(0, 128, 255, 0.3);
+    width: 350px;
+    height: 350px;
+    top: -75px;
+    left: -75px;
+}
+
+.big-bros {
+    border-color: rgba(255, 255, 0, 0.4);
+    width: 450px;
+    height: 450px;
+    top: -125px;
+    left: -125px;
+}
+
+/* Channels */
+.channels {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    width: 600px;
+    height: 600px;
+    top: calc(50% - 300px);
+    left: calc(50% - 300px);
+    transform: rotate(45deg);
+}
+
+.channel {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    background-color: #252d48;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+}
+
+.channel:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+}
+
+/* Channel positions in a circular layout */
+.home { transform: rotate(0deg) translate(270px) rotate(0deg); }
+.cracking { transform: rotate(45deg) translate(270px) rotate(-45deg); }
+.leaks { transform: rotate(90deg) translate(270px) rotate(-90deg); }
+.marketplace { transform: rotate(135deg) translate(270px) rotate(-135deg); }
+.vi-leaks { transform: rotate(180deg) translate(270px) rotate(-180deg); }
+.vip-nulled { transform: rotate(225deg) translate(270px) rotate(-225deg); }
+.vip-chats { transform: rotate(270deg) translate(270px) rotate(-270deg); }
+
+/* Sidebar */
+.sidebar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 80px;
+    background-color: #141a2b;
+    padding-top: 20px;
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sidebar li {
+    padding: 10px;
+    color: white;
+    cursor: pointer;
+}
+
+.sidebar li:hover {
+    background-color: #2d3a59;
+}
+
+/* Animations */
+@keyframes pulse {
+    0% { box-shadow: 0 0 30px 10px rgba(0, 0, 255, 0.5); }
+    50% { box-shadow: 0 0 50px 20px rgba(0, 0, 255, 0.7); }
+    100% { box-shadow: 0 0 30px 10px rgba(0, 0, 255, 0.5); }
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}

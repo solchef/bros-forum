@@ -44,7 +44,7 @@ export const ChatMessages: React.FC<ChatMessagesProps> = ({
   const queryKey = `chat:${chatId}`;
   const addKey = `chat:${chatId}:messages`;
   const updateKey = `chat:${chatId}:messages:update`;
-
+  const userId = member.id
   const chatRef = useRef<ElementRef<"div">>(null);
   const bottomRef = useRef<ElementRef<"div">>(null);
 
@@ -54,6 +54,7 @@ export const ChatMessages: React.FC<ChatMessagesProps> = ({
       apiUrl,
       paramKey,
       paramValue,
+      userId
     });
 
   useChatSocket({
@@ -123,7 +124,7 @@ export const ChatMessages: React.FC<ChatMessagesProps> = ({
                 content={message.content}
                 fileUrl={message.fileUrl}
                 deleted={message.deleted}
-                timestamp={format(new Date(message.createdAt), DATE_FORMAT)}
+                timestamp={(message.createdAt)?.toString()}
                 isUpdated={message.updatedAt !== message.createdAt}
                 socketUrl={socketUrl}
                 socketQuery={socketQuery}

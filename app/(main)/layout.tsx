@@ -11,7 +11,7 @@ const MainLayput: React.FC<MainLayputProps> = ({ children }) => {
         <NavigationSideBar />
       </div>
       <div className="md:pl-[72px] h-full">
-
+        {/* <p>hello</p> */}
       {children}
       </div>
     </div>

@@ -1,7 +1,7 @@
-import { currentProfile } from "@/lib/current-profile";
-import { db } from "@/lib/db";
-import { redirectToSignIn } from "@clerk/nextjs";
-import { ChannelType, MemberRole } from "@prisma/client";
+"use client"
+// src/components/ServerSidebar.tsx
+import { useEffect, useState } from "react";
+import { ChannelType, MemberRole, Server } from "@/lib/types"; // Ensure this path is correct
 import { redirect } from "next/navigation";
 import ServerHeader from "./server-header";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -11,6 +11,8 @@ import { Separator } from "../ui/separator";
 import { ServerSection } from "./server-section";
 import { ServerChannel } from "./server-channel";
 import { ServerMember } from "./server-member";
+import { supabase } from "@/lib/supabaseClient"; 
+import { useTelegramUser } from "../tma/TelegramUserProvider";
 
 interface ServerSidebarProps {
   serverId: string;
@@ -30,51 +32,87 @@ const roleIconMap = {
   [MemberRole.ADMIN]: <ShieldAlert className="mr-2 h-4 w-4 text-rose-500" />,
 };
 
-const ServerSidebar: React.FC<ServerSidebarProps> = async ({ serverId }) => {
-  const profile = await currentProfile();
+const ServerSidebar: React.FC<ServerSidebarProps> = ({ serverId }) => {
+  const [server, setServer] = useState<Server | null>(null);
+  const [profile, setProfile] = useState<any>(null); // Adjust type if you have a profile type
+  const [loading, setLoading] = useState(true);
+  const user = useTelegramUser();
 
-  if (!profile) return redirectToSignIn();
+  useEffect(() => {
+    const fetchServerData = async () => {
+      // Fetch the current user's profile
+      const { data: profileData, error: profileError } = await supabase
+          .from("profile")
+          .select("*")
+          .eq("userid", user?.id)
+          .single();
 
-  const server = await db.server.findUnique({
-    where: {
-      id: serverId,
-    },
+        // if (profileError || !profileData) {
+        //   console.error("Error fetching profile:", profileError);
+        //   router.push("/sign-in");
+        //   return;
+        // }
+      setProfile(profileData);
 
-    include: {
-      channels: {
-        orderBy: {
-          createdAt: "asc",
-        },
-      },
-      members: {
-        include: {
-          profile: true,
-        },
-        orderBy: {
-          role: "asc",
-        },
-      },
-    },
-  });
+      // Fetch the server data including channels and members
+      const { data: serverData, error: serverError } = await supabase
+      .from("server")
+      .select(`
+        id,
+        name,
+        imageurl,
+        invitecode,
+        member:member (
+          profileid
+        ),
+        channel:channel (
+          id,
+          name
+        )
+      `)
+      .eq("id", serverId)
+      .single()
+      // Check if the profile is part of the server
 
-  if (!server) return redirect("/");
 
-  const textChannels = server.channels.filter(
+        console.log(serverData);
+
+      if (serverError || !serverData) {
+        // redirect("/");
+        return;
+      }
+
+      setServer(serverData);
+      setLoading(false);
+    };
+
+    fetchServerData();
+  }, [serverId]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!server || !profile) {
+    return <div>Error loading data or access denied.</div>;
+  }
+
+  const textChannels = server.channel.filter(
     (channel) => channel.type === ChannelType.TEXT
   );
-  const audioChannels = server.channels.filter(
+  const audioChannels = server.channel.filter(
     (channel) => channel.type === ChannelType.AUDIO
   );
-  const vidioChannels = server.channels.filter(
+  const videoChannels = server.channel.filter(
     (channel) => channel.type === ChannelType.VIDEO
   );
 
-  const members = server.members.filter(
-    (member) => member.profileId !== profile.id
+  const members = server.member.filter(
+    (member) => member.profileid !== profile.id
   );
 
-  const role = server.members.find(
-    (member) => member.profileId === profile.id
+  const role = server.member.find(
+    (member) => member.profileid === profile.id
   )?.role;
 
   return (
@@ -87,7 +125,7 @@ const ServerSidebar: React.FC<ServerSidebarProps> = async ({ serverId }) => {
               {
                 label: "Text Channels",
                 type: "channel",
-                data: textChannels?.map((channel) => ({
+                data: textChannels.map((channel) => ({
                   icon: iconMap[channel.type],
                   name: channel.name,
                   id: channel.id,
@@ -96,7 +134,7 @@ const ServerSidebar: React.FC<ServerSidebarProps> = async ({ serverId }) => {
               {
                 label: "Voice Channels",
                 type: "channel",
-                data: audioChannels?.map((channel) => ({
+                data: audioChannels.map((channel) => ({
                   icon: iconMap[channel.type],
                   name: channel.name,
                   id: channel.id,
@@ -105,7 +143,7 @@ const ServerSidebar: React.FC<ServerSidebarProps> = async ({ serverId }) => {
               {
                 label: "Video Channels",
                 type: "channel",
-                data: vidioChannels?.map((channel) => ({
+                data: videoChannels.map((channel) => ({
                   icon: iconMap[channel.type],
                   name: channel.name,
                   id: channel.id,
@@ -114,9 +152,9 @@ const ServerSidebar: React.FC<ServerSidebarProps> = async ({ serverId }) => {
               {
                 label: "Members",
                 type: "member",
-                data: members?.map((member) => ({
+                data: members.map((member) => ({
                   icon: roleIconMap[member.role],
-                  name: member.profile.name,
+                  name: member.profileid,
                   id: member.id,
                 })),
               },
@@ -125,7 +163,7 @@ const ServerSidebar: React.FC<ServerSidebarProps> = async ({ serverId }) => {
         </div>
 
         <Separator className="bg-zinc-200 dark:bg-zinc-700 rounded-md my-2" />
-        {!!textChannels?.length && (
+        {!!textChannels.length && (
           <div className="mb-2">
             <ServerSection
               sectionType="channels"
@@ -145,8 +183,8 @@ const ServerSidebar: React.FC<ServerSidebarProps> = async ({ serverId }) => {
             </div>
           </div>
         )}
-
-        {!!audioChannels?.length && (
+{/* 
+        {!!audioChannels.length && (
           <div className="mb-2">
             <ServerSection
               sectionType="channels"
@@ -165,9 +203,9 @@ const ServerSidebar: React.FC<ServerSidebarProps> = async ({ serverId }) => {
               ))}
             </div>
           </div>
-        )}
+        )} */}
 
-        {!!vidioChannels?.length && (
+        {/* {!!videoChannels.length && (
           <div className="mb-2">
             <ServerSection
               sectionType="channels"
@@ -176,7 +214,7 @@ const ServerSidebar: React.FC<ServerSidebarProps> = async ({ serverId }) => {
               label="Video Channels"
             />
             <div className="space-y-[2px]">
-              {vidioChannels.map((channel) => (
+              {videoChannels.map((channel) => (
                 <ServerChannel
                   key={channel.id}
                   channel={channel}
@@ -186,9 +224,9 @@ const ServerSidebar: React.FC<ServerSidebarProps> = async ({ serverId }) => {
               ))}
             </div>
           </div>
-        )}
+        )} */}
 
-        {!!members?.length && (
+        {!!members.length && (
           <div className="mb-2">
             <ServerSection
               sectionType="members"
