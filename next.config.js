@@ -10,7 +10,7 @@ const nextConfig = {
     return config;
   },
   images: {
-    domains: ["utfs.io","picsum.photos"],
+    domains: ["utfs.io","picsum.photos","wepqmlljzvxjrytnhlhi.supabase.co"],
   },
   typescript: {
     ignoreBuildErrors: true,  // Disable type-checking during build

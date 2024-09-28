@@ -4,12 +4,13 @@ import { Plus } from "lucide-react";
 
 import { ActionTooltip } from "@/components/action-tooltip";
 import { useModal } from "@/hooks/use-modal-store";
+import Image from "next/image";
 
 export const NavigationAction = () => {
   const { onOpen, onClose, type } = useModal();
   return (
     <div>
-      <ActionTooltip side="right" align="center" label="Add a server">
+      {/* <ActionTooltip side="right" align="center" label="Add a server">
         <button
           className="group flex items-center"
           onClick={() => onOpen("createServer")}
@@ -25,7 +26,8 @@ export const NavigationAction = () => {
             />
           </div>
         </button>
-      </ActionTooltip>
+      </ActionTooltip> */}
+      <Image alt="logo" src="/logo.svg" height={40} width={40}/>
     </div>
   );
 };
