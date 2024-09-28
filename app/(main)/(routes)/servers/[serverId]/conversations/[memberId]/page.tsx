@@ -21,42 +21,42 @@ const MemberIdPage: React.FC<MemberIdPageProps> = async ({
   params: { serverId, memberId },
   searchParams: { video },
 }) => {
-  const profile = await currentProfile();
+  // const profile = await currentProfile({});
 
   // if (!profile) return redirectToSignIn();
 
-  const currentMember = await db.member.findFirst({
-    where: {
-      serverId,
-      profileId: profile.id,
-    },
-    include: {
-      profile: true,
-    },
-  });
+  // const currentMember = await db.member.findFirst({
+  //   where: {
+  //     serverId,
+  //     profileId: profile.id,
+  //   },
+  //   include: {
+  //     profile: true,
+  //   },
+  // });
 
-  if (!currentMember) return redirect("/");
+  // if (!currentMember) return redirect("/");
 
-  const conversation = await getOrCreateConversation(
-    currentMember.id,
-    memberId
-  );
+  // const conversation = await getOrCreateConversation(
+  //   currentMember.id,
+  //   memberId
+  // );
 
-  if (!conversation) return redirect(`/servers/${serverId}`);
+  // if (!conversation) return redirect(`/servers/${serverId}`);
 
-  const { memberOne, memberTwo } = conversation;
+  // const { memberOne, memberTwo } = conversation;
 
-  const otherMember =
-    memberOne.profileId === profile.id ? memberTwo : memberOne;
+  // const otherMember =
+  //   memberOne.profileId === profile.id ? memberTwo : memberOne;
 
-  if (!otherMember) return redirect(`/servers/${serverId}`);
+  // if (!otherMember) return redirect(`/servers/${serverId}`);
 
   return (
     <div className="bg-white dark:bg-[#313338] flex flex-col h-full">
-      <ChatHeader
+      {/* <ChatHeader
         name={otherMember.profile.name}
         type="conversation"
-        imageUrl={otherMember.profile.imageUrl}
+        imageurl={otherMember.profile.imageurl}
         serverId={serverId}
       />
       {video && (
@@ -87,7 +87,7 @@ const MemberIdPage: React.FC<MemberIdPageProps> = async ({
             }}
           />
         </>
-      )}
+      )} */}
     </div>
   );
 };

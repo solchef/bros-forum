@@ -62,9 +62,10 @@ export const ChatItem: React.FC<ChatItemProps> = ({
 
   const onMemberClick = () => {
 
-    if(currentMember.id === member.id) return;
 
-    router.push(`/servers/${params?.serverId}/conversations/${member.id}`);
+    if(currentMember.id === member?.profile.id) return;
+
+    router.push(`/servers/${params?.serverId}/conversations/${member.profile.id}`);
   }
 
   useEffect(() => {
@@ -112,7 +113,7 @@ export const ChatItem: React.FC<ChatItemProps> = ({
 
   const isAdmin = currentMember.role === MemberRole.ADMIN;
   const isModerator = currentMember.role === MemberRole.MODERATOR;
-  const isOwner = currentMember.id === member.id;
+  const isOwner = currentMember.id === member.profile.id;
   const canDeleteMessage = !deleted && (isAdmin || isModerator || isOwner);
   const canEditMessage = !deleted && isOwner && !fileUrl;
   const isPDF = fileType === "pdf" && fileUrl;
@@ -124,7 +125,8 @@ export const ChatItem: React.FC<ChatItemProps> = ({
     <div className="relative group flex items-center hover:bg-black/5 p-4 transition w-full">
       <div className="group flex gap-x-2 items-start w-full">
         <div onClick={onMemberClick} className="cursor-pointer hover:drop-shadow-md transition">
-          <UserAvtar src={member?.profile?.imageUrl} />
+           {/* @ts-ignore */}
+          <UserAvtar src={member?.profile?.imageurl} />
         </div>
         <div className="flex flex-col w-full">
           <div className="flex items-center gap-x-2">

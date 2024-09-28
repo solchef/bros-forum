@@ -60,6 +60,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@supabase/supabase-js";
 import { useTelegramUser } from "@/components/tma/TelegramUserProvider"; // Adjust import path
+import { TmaProviderLoading } from "@/components/tma/tma-provider-loading";
 
 interface ServerIdPageProps {
   params: {
@@ -75,7 +76,7 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
 const ServerIdPage: React.FC<ServerIdPageProps> = ({ params: { serverId } }) => {
   const user = useTelegramUser(); // Get user from Telegram context
   // console.log(user)
-  const [initialChannel, setInitialChannel] = useState(null);
+  const [initialChannel, setInitialChannel] = useState({});
   const router = useRouter();
 
   useEffect(() => {
@@ -134,7 +135,7 @@ const ServerIdPage: React.FC<ServerIdPageProps> = ({ params: { serverId } }) => 
       const server = serverData[0]; // Get the first server object
       const channels = server?.channel; // Access the channels array
 
-      console.log(channels)
+      // console.log(channels)
       
       // Ensure channels exist
       if (channels && channels.length > 0) {
@@ -158,7 +159,7 @@ const ServerIdPage: React.FC<ServerIdPageProps> = ({ params: { serverId } }) => 
   }, [user, serverId, router]);
 
   if (!user || !initialChannel) {
-    return <div>Loading...</div>; // Optional loading state
+    return <TmaProviderLoading/>; 
   }
 
   return null; // No content is rendered because of the redirect

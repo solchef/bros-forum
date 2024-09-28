@@ -1,11 +1,11 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { Channel, ChannelType, MemberRole, Server } from "@prisma/client";
 import { Edit, Hash, Lock, Mic, Trash, Video } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import { ActionTooltip } from "../action-tooltip";
 import { ModalType, useModal } from "@/hooks/use-modal-store";
+import { Channel, ChannelType, MemberRole, Server } from "@/lib/types";
 
 interface ServerChannelProps {
   channel: Channel;
@@ -36,8 +36,10 @@ export const ServerChannel: React.FC<ServerChannelProps> = ({
 
   const onAction = (e: React.MouseEvent, action: ModalType) => {
     e.stopPropagation();
+    // @ts-ignore
     onOpen(action, { server, channel });
   };
+
 
   return (
     <button

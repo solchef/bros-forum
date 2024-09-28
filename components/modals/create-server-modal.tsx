@@ -34,7 +34,7 @@ const formSchema = z.object({
     .string()
     .min(1, "Server Name is required")
     .max(32, "Server Name is too long"),
-  imageUrl: z.string().min(1, "Server Image is required"),
+  imageurl: z.string().min(1, "Server Image is required"),
 });
 
 const CreateServerModal = () => {
@@ -47,7 +47,7 @@ const CreateServerModal = () => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
-      imageUrl: "",
+      imageurl: "",
     },
   });
 
@@ -87,7 +87,7 @@ const CreateServerModal = () => {
               <div className="flex items-center justify-center text-center">
                 <FormField
                   control={form.control}
-                  name="imageUrl"
+                  name="imageurl"
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>

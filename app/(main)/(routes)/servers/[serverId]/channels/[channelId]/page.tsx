@@ -17,7 +17,7 @@
 // const ChannelId: React.FC<ChannelIdProps> = async ({
 //   params: { serverId, channelId },
 // }) => {
-//   const profile = await currentProfile();
+//   const profile = await currentProfile({});
 
 //   // if (!profile) return redirectToSignIn();
 

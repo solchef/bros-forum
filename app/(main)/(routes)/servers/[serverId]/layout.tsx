@@ -58,6 +58,7 @@ import { useTelegramUser } from "@/components/tma/TelegramUserProvider"; // Adju
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabaseClient"; // Assuming Supabase client is initialized in utils
 import ServerSidebar from "@/components/server/server-sidebar"; // Adjust import if necessary
+import { TmaProviderLoading } from "@/components/tma/tma-provider-loading";
 
 interface ServerIdLayoutProps {
   children: React.ReactNode;
@@ -136,7 +137,7 @@ const ServerIdLayout: React.FC<ServerIdLayoutProps> = ({
   }, [user, serverId, router]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <TmaProviderLoading/>;
   }
 
   if (!profile || !server) {

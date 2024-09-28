@@ -7,7 +7,7 @@ const MESSAGES_BATCH = 10;
 
 export async function GET(req: Request) {
   try {
-    const profile = await currentProfile();
+    const profile = await currentProfile({});
     const { searchParams } = new URL(req.url);
 
     const cursor = searchParams.get("cursor");
@@ -59,7 +59,7 @@ export async function GET(req: Request) {
       });
     }
 
-    let nextCursor = null;
+    let nextCursor = "";
 
     if (messages.length === MESSAGES_BATCH) {
       nextCursor = messages[messages.length - 1].id;

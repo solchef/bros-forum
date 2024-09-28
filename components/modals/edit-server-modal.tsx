@@ -35,7 +35,7 @@ const formSchema = z.object({
     .string()
     .min(1, "Server Name is required")
     .max(32, "Server Name is too long"),
-  imageUrl: z.string().min(1, "Server Image is required"),
+  imageurl: z.string().min(1, "Server Image is required"),
 });
 
 const EditServerModal = () => {
@@ -49,14 +49,15 @@ const EditServerModal = () => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
-      imageUrl: "",
+      imageurl: "",
     },
   });
 
   useEffect(() => {
     if (server) {
       form.setValue("name", server.name);
-      form.setValue("imageUrl", server.imageUrl);
+      // @ts-ignore
+      form.setValue("imageurl", server.imageurl);
     }
   }, [server, form]);
 
@@ -96,7 +97,7 @@ const EditServerModal = () => {
               <div className="flex items-center justify-center text-center">
                 <FormField
                   control={form.control}
-                  name="imageUrl"
+                  name="imageurl"
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>

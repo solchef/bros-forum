@@ -25,7 +25,9 @@ const iconMap = {
 };
 
 const roleIconMap = {
-  [MemberRole.GUEST]: null,
+  [MemberRole.GUEST]: (
+    <ShieldCheck className="mr-2 h-4 w-4 text-indigo-500" />
+  ),
   [MemberRole.MODERATOR]: (
     <ShieldCheck className="mr-2 h-4 w-4 text-indigo-500" />
   ),
@@ -63,25 +65,32 @@ const ServerSidebar: React.FC<ServerSidebarProps> = ({ serverId }) => {
         imageurl,
         invitecode,
         member:member (
-          profileid
+          profileid,
+          profile:profile (
+            id,
+            name,
+            imageurl,
+            email
+          )
         ),
         channel:channel (
           id,
-          name
+          name,
+          type
         )
       `)
       .eq("id", serverId)
-      .single()
-      // Check if the profile is part of the server
+      .single();
+          // Check if the profile is part of the server
 
 
-        console.log(serverData);
+        // console.log(serverData);
 
       if (serverError || !serverData) {
         // redirect("/");
         return;
       }
-
+      // @ts-ignore
       setServer(serverData);
       setLoading(false);
     };
@@ -100,6 +109,7 @@ const ServerSidebar: React.FC<ServerSidebarProps> = ({ serverId }) => {
   const textChannels = server.channel.filter(
     (channel) => channel.type === ChannelType.TEXT
   );
+
   const audioChannels = server.channel.filter(
     (channel) => channel.type === ChannelType.AUDIO
   );
@@ -115,8 +125,10 @@ const ServerSidebar: React.FC<ServerSidebarProps> = ({ serverId }) => {
     (member) => member.profileid === profile.id
   )?.role;
 
+
   return (
     <div className="flex flex-col h-full text-primary w-full dark:bg-[#2B2D31] bg-[#F2F3F5]">
+      {/* @ts-ignore */}
       <ServerHeader server={server} role={role} />
       <ScrollArea className="flex-1 px-3">
         <div className="mt-2">
@@ -154,7 +166,8 @@ const ServerSidebar: React.FC<ServerSidebarProps> = ({ serverId }) => {
                 type: "member",
                 data: members.map((member) => ({
                   icon: roleIconMap[member.role],
-                  name: member.profileid,
+                  // @ts-ignore
+                  name: member.profile?.name,
                   id: member.id,
                 })),
               },
@@ -173,6 +186,8 @@ const ServerSidebar: React.FC<ServerSidebarProps> = ({ serverId }) => {
             />
             <div className="space-y-[2px]">
               {textChannels.map((channel) => (
+
+                // <p key={channel.id}>{channel.name}</p>
                 <ServerChannel
                   key={channel.id}
                   channel={channel}
@@ -183,7 +198,7 @@ const ServerSidebar: React.FC<ServerSidebarProps> = ({ serverId }) => {
             </div>
           </div>
         )}
-{/* 
+
         {!!audioChannels.length && (
           <div className="mb-2">
             <ServerSection
@@ -203,9 +218,9 @@ const ServerSidebar: React.FC<ServerSidebarProps> = ({ serverId }) => {
               ))}
             </div>
           </div>
-        )} */}
+        )}
 
-        {/* {!!videoChannels.length && (
+        {!!videoChannels.length && (
           <div className="mb-2">
             <ServerSection
               sectionType="channels"
@@ -224,7 +239,7 @@ const ServerSidebar: React.FC<ServerSidebarProps> = ({ serverId }) => {
               ))}
             </div>
           </div>
-        )} */}
+        )}
 
         {!!members.length && (
           <div className="mb-2">
@@ -232,10 +247,12 @@ const ServerSidebar: React.FC<ServerSidebarProps> = ({ serverId }) => {
               sectionType="members"
               role={role}
               label="Members"
+              //@ts-ignore
               server={server}
             />
             <div className="space-y-[2px]">
-              {members.map((member) => (
+              {server.member.map((member) => (
+                // @ts-ignore
                 <ServerMember key={member.id} member={member} server={server} />
               ))}
             </div>

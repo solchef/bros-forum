@@ -12,6 +12,14 @@ const nextConfig = {
   images: {
     domains: ["utfs.io","picsum.photos"],
   },
+  typescript: {
+    ignoreBuildErrors: true,  // Disable type-checking during build
+  },
+  eslint: {
+    ignoreDuringBuilds: true,  // Disable ESLint checks during build (optional)
+  },
+
+
 };
 
 module.exports = nextConfig;

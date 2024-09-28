@@ -16,7 +16,7 @@
 //     data: {
 //       userId: user.id,
 //       name: `${user.firstName} ${user.lastName}`,
-//       imageUrl: user.imageUrl,
+//       imageurl: user.imageurl,
 //       email: user.emailAddresses[0].emailAddress,
 //     },
 //   });
@@ -52,7 +52,7 @@ export const initialProfile = async (user:any) => {
       {
         userId: user.id,
         name: `${user.firstName} ${user.lastName}`,
-        imageUrl: user.photoUrl || '', 
+        imageurl: user.photoUrl || '', 
         email: user.username || '', 
       }
     ])

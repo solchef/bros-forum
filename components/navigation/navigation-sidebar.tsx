@@ -9,7 +9,7 @@
 // import { ModeToggle } from "../mode-toggle";
 
 // const NavigationSidebar = async () => {
-//   const profile = await currentProfile();
+//   const profile = await currentProfile({});
 
 //   if (!profile) return redirect("/");
 
@@ -32,7 +32,7 @@
 //           <div key={server.id} className="mb-4">
 //             <NavigationItem
 //               id={server.id}
-//               imageUrl={server.imageUrl}
+//               imageurl={server.imageurl}
 //               name={server.name}
 //             />
 //           </div>
@@ -75,7 +75,7 @@ const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "";
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 const NavigationSidebar = () => {
-  const [servers, setServers] = useState([]);
+  const [servers, setServers] = useState();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -89,8 +89,9 @@ const NavigationSidebar = () => {
           console.error('Error fetching servers:', error);
           return;
         }
+        // @ts-ignore
+        setServers(serversData); 
 
-        setServers(serversData || []); // Set fetched servers data to state
       } catch (error) {
         console.error('Error:', error);
       } finally {
@@ -110,11 +111,15 @@ const NavigationSidebar = () => {
     <NavigationAction />
     <Separator className="h-[2px] bg-zinc-300 dark:bg-zinc-700 rounded-md w-10 mx-auto" />
     <ScrollArea className="flex-1 w-full">
-      {servers.map((server) => (
+
+      
+      {
+      //@ts-ignore
+      servers.map((server) => (
         <div key={server.id} className="mb-4">
           <NavigationItem
             id={server.id}
-            imageUrl={server.imageurl}
+            imageurl={server.imageurl}
             name={server.name}
           />
         </div>

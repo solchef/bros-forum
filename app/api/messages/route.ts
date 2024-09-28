@@ -8,7 +8,7 @@
 // export async function GET(req: Request) {
 //   try {
 //     console.log(req)
-//     const profile = await currentProfile();
+//     const profile = await currentProfile({});
 //     const { searchParams } = new URL(req.url);
 
 //     const cursor = searchParams.get("cursor");

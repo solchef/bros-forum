@@ -8,13 +8,13 @@ import { ActionTooltip } from "@/components/action-tooltip";
 
 interface NavigationItemProps {
   id: string;
-  imageUrl: string;
+  imageurl: string;
   name: string;
 }
 
 export const NavigationItem: React.FC<NavigationItemProps> = ({
   id,
-  imageUrl,
+  imageurl,
   name,
 }) => {
   const params = useParams();
@@ -41,7 +41,7 @@ export const NavigationItem: React.FC<NavigationItemProps> = ({
               "bg-primary/10 text-primary rounded-[16px]"
           )}
         >
-          <Image fill src={imageUrl} alt="Channel" />
+          <Image fill src={imageurl} alt="Channel" />
         </div>
       </button>
     </ActionTooltip>
