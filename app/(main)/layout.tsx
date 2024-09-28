@@ -34,7 +34,7 @@ const MainLayput: React.FC<MainLayputProps> = ({ children }) => {
     <div className="h-full relative">
       {/* Sidebar for larger screens */}
       <div className="hidden md:flex h-full w-[72px] z-30 flex-col fixed inset-y-0">
-        <NavigationSideBar />
+        {/* <NavigationSideBar /> */}
       </div>
 
       {/* Main content area */}
@@ -46,7 +46,7 @@ const MainLayput: React.FC<MainLayputProps> = ({ children }) => {
       {/* Bottom Tabs */}
       <div className="fixed bottom-0 w-full md:hidden">
         {/* Ensure it's fixed at the bottom and hidden on larger screens */}
-        <BottomTabs />
+        {/* <BottomTabs /> */}
       </div>
     </div>
   );
