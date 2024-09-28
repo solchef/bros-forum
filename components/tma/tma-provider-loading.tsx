@@ -18,7 +18,7 @@ export function TmaProviderLoading() {
       <div className="flex text-muted-foreground gap-2 text-sm items-center">
         {/* <Loader className="w-16 h-16" /> */}
         <center>
-        <h5>Broscams Forum MiniApp is temporarily under maintenance and will be in a short while. <br/> Please be patient as the Team cooks up something good for you</h5>
+        <h5>Broscams Forum MiniApp is temporarily under maintenance and will be in a short while.</h5>
          {/* Adjust size of Loader */}
          </center>
       </div>
