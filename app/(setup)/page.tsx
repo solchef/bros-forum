@@ -1,48 +1,3 @@
-// "use client";
-
-// import InitialModal from "@/components/modals/initial-modal";
-// import { db } from "@/lib/db";
-// import { initialProfile } from "@/lib/initial-profile";
-// import { redirect } from "next/navigation";
-// import { useEffect } from "react";
-// import { useTelegramUser } from "@/components/tma/TelegramUserProvider";
-
-// const SetupPage = () => {
-
-//    const user = useTelegramUser();
-
-//   useEffect(() => {
-//     const setupUserProfile = async () => {
-//       const profile = await initialProfile(user);
-
-//       console.log(profile);
-
-//       const server = await db.server.findFirst({
-//         where: {
-//           members: {
-//             some: {
-//               profileId: profile.id,
-//             },
-//           },
-//         },
-//       });
-
-//       if (!server) {
-//         // redirect(`/servers/1234`);
-//         redirect(`/servers/72d2db63-720f-43aa-9d92-5375d79ec90f`);
-//       }
-//     };
-
-//     setupUserProfile();
-//   }, [user]);
-
-//   // return <InitialModal />;
-//   // redirect(`/servers/72d2db63-720f-43aa-9d92-5375d79ec90f`);
-// };
-
-// export default SetupPage;
-
-
 "use client";
 
 import InitialModal from "@/components/modals/initial-modal";
@@ -78,7 +33,7 @@ const SetupPage = () => {
 
       // If no server found, redirect to a specific server
       if (!server) {
-        router.push(`/servers/72d2db63-720f-43aa-9d92-5375d79ec90f`);
+        router.push(`/servers/befaa09a-4f37-47ab-88a4-8b147a88e160/channels/a58d6f87-8b62-41d1-b83c-b08598a8b548`);
       }
     };
 

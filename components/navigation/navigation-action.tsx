@@ -1,8 +1,8 @@
 "use client";
 
-import { Plus } from "lucide-react";
+// import { Plus } from "lucide-react";
 
-import { ActionTooltip } from "@/components/action-tooltip";
+// import { ActionTooltip } from "@/components/action-tooltip";
 import { useModal } from "@/hooks/use-modal-store";
 import Image from "next/image";
 

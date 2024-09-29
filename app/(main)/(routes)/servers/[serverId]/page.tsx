@@ -132,7 +132,7 @@ const ServerIdPage: React.FC<ServerIdPageProps> = ({ params: { serverId } }) => 
       }
       
       // `serverData` is an array, we need the first element (the server) to access its channels
-      const server = serverData[0]; // Get the first server object
+      const server = serverData.find(srv => srv.name === "Home") // Get the first server object
       const channels = server?.channel; // Access the channels array
 
       // console.log(channels)
