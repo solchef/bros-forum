@@ -9,6 +9,7 @@ import { ChatItem } from "./chat-item";
 import { format } from "date-fns";
 import { useChatSocket } from "@/hooks/use-chat-socket";
 import { useChatScroll } from "@/hooks/use-chat-scroll";
+import { timeAgo } from "@/lib/utils";
 
 type MessageWithMemberWithProfile = Message & {
   member: Member & {
@@ -92,7 +93,7 @@ export const ChatMessages: React.FC<ChatMessagesProps> = ({
       </div>
     );
   }
-
+// console.log(data)
   return (
     <div ref={chatRef} className="flex-1 flex flex-col py-4 overflow-y-auto">
       {!hasNextPage && <div className="flex-1" />}
@@ -124,8 +125,8 @@ export const ChatMessages: React.FC<ChatMessagesProps> = ({
                 content={message.content}
                 fileUrl={message.fileUrl}
                 deleted={message.deleted}
-                timestamp={(message.createdAt)?.toString()}
-                isUpdated={message.updatedAt !== message.createdAt}
+                timestamp={timeAgo(message.createdat)}
+                isUpdated={message.updatedat !== message.createdat}
                 socketUrl={socketUrl}
                 socketQuery={socketQuery}
               />

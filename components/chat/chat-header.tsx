@@ -9,6 +9,7 @@ interface ChatHeaderProps {
   serverId: string;
   type: "channel" | "conversation";
   imageurl?: string;
+  serverName:string
 }
 
 export const ChatHeader: React.FC<ChatHeaderProps> = ({
@@ -16,6 +17,7 @@ export const ChatHeader: React.FC<ChatHeaderProps> = ({
   serverId,
   type,
   imageurl,
+  serverName
 }) => {
   return (
     <div className="text-md font-semibold px-3 flex items-center h-12 border-neutral-200 dark:border-neutral-800 border-b-2">
@@ -26,10 +28,13 @@ export const ChatHeader: React.FC<ChatHeaderProps> = ({
           className="w-5 h-5 text-zinc-500 dark:text-zinc-400 mr-2"
         />
       )}
-      {type === "channel" && (
+      {/* {type === "channel" && (
         <Hash className="h-6 w-6 text-zinc-500 dark:text-zinc-400 mr-2" />
-      )}
-      <p className="font-semibold text-md text-black dark:text-white">{name}</p>
+      )} */}
+      <div className="mx-2 py-2">
+      <h4 className="font-semibold text-md text-black dark:text-white ">{serverName}</h4>
+      <p className="font-light text-sm text-black dark:text-white ">#{name}</p>
+      </div>
       <div className="ml-auto flex items-center">
         {type === "conversation" && <ChatVideoButton />}
         <SocketIndicator />

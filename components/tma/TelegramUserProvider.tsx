@@ -29,10 +29,10 @@ export const TelegramUserProvider: React.FC<TelegramUserProviderProps> = ({ chil
   // const user = initData?.user || null; 
   // const user = initData?.user || null;
    const user = {
-      id:'user_01',
-      username: "jawiwy",
-      firstName: "jaa",
-      lastName:"heed"
+      id:'6686793326',
+      username: "Jjmjpo",
+      firstName: "james",
+      lastName:"chege"
 
    }
 

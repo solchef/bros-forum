@@ -126,10 +126,15 @@ const ChannelId: React.FC<ChannelIdProps> = ({
           id,
           name,
           type,
-          serverid
+          serverid,
+          server(
+          id,
+          name
+          )
         `)
         .eq("id", channelId)
         .single(); // Get a single channel by ID
+        console.log(data)
 
       if (error || !data) {
         console.error("Error fetching channel:", error);
@@ -155,6 +160,7 @@ const ChannelId: React.FC<ChannelIdProps> = ({
         name={channelData.name}
         serverId={channelData.serverid}
         type="channel"
+        serverName={channelData.server.name}
       />
 
       {channelData.type === ChannelType.TEXT && (

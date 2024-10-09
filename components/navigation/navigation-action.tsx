@@ -3,11 +3,11 @@
 // import { Plus } from "lucide-react";
 
 // import { ActionTooltip } from "@/components/action-tooltip";
-import { useModal } from "@/hooks/use-modal-store";
+// import { useModal } from "@/hooks/use-modal-store";
 import Image from "next/image";
 
 export const NavigationAction = () => {
-  const { onOpen, onClose, type } = useModal();
+  // const { onOpen, onClose, type } = useModal();
   return (
     <div>
       {/* <ActionTooltip side="right" align="center" label="Add a server">

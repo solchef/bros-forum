@@ -14,6 +14,7 @@ export enum ChannelType {
   export interface Server {
     id: string;
     name: string;
+    imageurl:string;
     channel: Channel[];
     member: Member[];
   }
@@ -22,6 +23,8 @@ export enum ChannelType {
     id: string;
     name: string;
     type: ChannelType;
+    serverid:string;
+    profileid:string;
   }
   
   export interface Member {
@@ -30,4 +33,11 @@ export enum ChannelType {
     profileid: string;
     profile: { name: string }[];
   }
+
+  export interface Profile {
+    id: string;
+    name: string;
+    userimage: string;
+  }
+  
   

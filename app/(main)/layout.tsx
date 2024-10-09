@@ -1,28 +1,4 @@
 // import NavigationSideBar from "@/components/navigation/navigation-sidebar";
-// import { BottomTabs } from "@/components/tma/bottom-tab-navigation";
-
-// interface MainLayputProps {
-//   children: React.ReactNode;
-// }
-
-// const MainLayput: React.FC<MainLayputProps> = ({ children }) => {
-//   return (
-//     <div className="h-full">
-//       <div className="hidden md:flex h-full w-[72px] z-30 flex-col fixed inset-y-0">
-//         <NavigationSideBar />
-//       </div>
-//       <div className="md:pl-[72px] h-full">
-//       {children}
-//       </div>
-//       <BottomTabs/>
-//     </div>
-//   );
-// };
-
-// export default MainLayput;
-
-
-import NavigationSideBar from "@/components/navigation/navigation-sidebar";
 import { BottomTabs } from "@/components/tma/bottom-tab-navigation";
 
 interface MainLayputProps {
@@ -34,7 +10,7 @@ const MainLayput: React.FC<MainLayputProps> = ({ children }) => {
     <div className="h-full relative">
       {/* Sidebar for larger screens */}
       <div className="hidden md:flex h-full w-[72px] z-30 flex-col fixed inset-y-0">
-        <NavigationSideBar />
+        {/* <NavigationSideBar /> */}
       </div>
 
       {/* Main content area */}

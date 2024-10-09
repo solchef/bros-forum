@@ -65,7 +65,7 @@ export const ChatItem: React.FC<ChatItemProps> = ({
 
     if(currentMember.id === member?.profile.id) return;
 
-    router.push(`/servers/${params?.serverId}/conversations/${member.profile.id}`);
+    // router.push(`/servers/${params?.serverId}/conversations/${member.profile.id}`);
   }
 
   useEffect(() => {
@@ -120,6 +120,8 @@ export const ChatItem: React.FC<ChatItemProps> = ({
   const isImage = !isPDF && fileUrl;
 
   const { onOpen } = useModal();
+
+  // console.log(timestamp)
 
   return (
     <div className="relative group flex items-center hover:bg-black/5 p-4 transition w-full">

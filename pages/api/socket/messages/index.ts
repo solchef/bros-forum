@@ -1,97 +1,8 @@
-// import { currentProfilePages } from "@/lib/current-profile-pages";
-// import { db } from "@/lib/db";
-// import { NextApiResponseServerIo } from "@/types";
-// import { NextApiRequest } from "next";
-
-// export default async function handler(
-//   req: NextApiRequest,
-//   res: NextApiResponseServerIo
-// ) {
-//   if (req.method !== "POST")
-//     return res.status(405).json({ message: "Method not allowed" });
-
-//   try {
-//     const profile = await currentProfilePages(req);
-//     const { content, fileUrl } = req.body;
-
-//     const { serverId, channelId } = req.query;
-
-//     if (!profile) return res.status(401).json({ message: "Unauthorized" });
-//     if (!serverId)
-//       return res.status(400).json({ message: "Server id is required" });
-//     if (!channelId)
-//       return res.status(400).json({ message: "Channel id is required" });
-//     if (!content)
-//       return res.status(400).json({ message: "Content is required" });
-
-//     const server = await db.server.findFirst({
-//       where: {
-//         id: serverId as string,
-//         members: {
-//           some: {
-//             profileId: profile.id,
-//           },
-//         },
-//       },
-//       include: {
-//         members: true,
-//       },
-//     });
-
-//     if (!server) return res.status(404).json({ message: "Server not found" });
-
-//     const channel = await db.channel.findFirst({
-//       where: {
-//         id: channelId as string,
-//         serverId: server.id,
-//       },
-//     });
-
-//     if (!channel) return res.status(404).json({ message: "Channel not found" });
-
-//     const member = server.members.find(
-//       (member) => member.profileId === profile.id
-//     );
-
-//     if (!member) return res.status(401).json({ message: "Unauthorized" });
-
-//     const message = await db.message.create({
-//       data: {
-//         content,
-//         fileUrl,
-//         memberId: member.id,
-//         channelId: channel.id as string,
-//       },
-//       include: {
-//         member: {
-//           include: {
-//             profile: true,
-//           },
-//         },
-//       },
-//     });
-
-//     const channelKey = `chat:${channelId}:messages`;
-
-//     res?.socket?.server?.io.emit(channelKey, message);
-
-//     return res.status(200).json({ message });
-//   } catch (error) {
-//     console.log("[MESSAGES_POST_ERROR]", error);
-//     return res.status(500).json({ message: "Internal server error" });
-//   }
-// }
-
 import { createClient } from "@supabase/supabase-js";
 import { NextApiRequest, NextApiResponse } from "next";
-import { currentProfilePages } from "@/lib/current-profile-pages";
 import { currentProfile } from "@/lib/current-profile";
+import { supabase } from "@/lib/supabaseClient";
 
-// Initialize Supabase client
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "POST") {
@@ -106,13 +17,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     // console.log(usr)
 
     const profile = await currentProfile(usr);
-
-    console.log(req.body)
     
     // Access the member ID from the x-user-id header
 
     const { content, fileUrl } = req.body;
     const { serverId, channelId } = req.query;
+
+
 
     // if (!profile) return res.status(401).json({ message: "Unauthorized" });
     // if (!serverId) return res.status(400).json({ message: "Server id is required" });
@@ -147,15 +58,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     // }
 
     // // Fetch the member details using the memberId from the header
-    console.log(memberId, serverId)
+    // console.log(memberId, serverId)
     const { data: member, error: memberError } = await supabase
       .from("member")
       .select("id")
-      .eq("profileid", memberId) // Use memberId from the header here
+      .eq("profileid", profile.id) // Use memberId from the header here
       .eq("serverid", serverId)
       .single();
 
-      console.log(memberError)
+      // console.log(memberError)
 
     if (memberError || !member) {
       return res.status(401).json({ message: "Unauthorized" });
@@ -175,7 +86,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         content,
         fileurl: fileUrl,
         memberid: member.id,
-        channelid: channelId,
+        channelid: channelId, 
       })
       .select(`
         id, content, fileurl, createdat,
@@ -185,7 +96,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       `)
       .single();
 
-      console.log(message)
+      // console.log(message)
 
     if (messageError) {
       console.log("[SUPABASE_CREATE_MESSAGE_ERROR]", messageError);
@@ -193,7 +104,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     const channelKey = `chat:${channelId}:messages`;
-    res?.socket?.server?.io.emit(channelKey, message);
+    res?.socket?.server?.io?.emit(channelKey, message);
 
     return res.status(200).json({ message });
   } catch (error) {
