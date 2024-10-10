@@ -5,7 +5,7 @@ import qs from "query-string";
 import { Member, MemberRole, Profile } from "@prisma/client";
 import { UserAvtar } from "@/components/user-avtar";
 import { ActionTooltip } from "../action-tooltip";
-import { Edit, FileIcon, ShieldAlert, ShieldCheck, Trash } from "lucide-react";
+import { Edit, FileIcon, Heart, Reply, ShieldAlert, ShieldCheck, Trash } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
@@ -61,12 +61,10 @@ export const ChatItem: React.FC<ChatItemProps> = ({
   const router = useRouter();
 
   const onMemberClick = () => {
-
-
-    if(currentMember.id === member?.profile.id) return;
+    if (currentMember.id === member?.profile.id) return;
 
     // router.push(`/servers/${params?.serverId}/conversations/${member.profile.id}`);
-  }
+  };
 
   useEffect(() => {
     const handleKeyDown = (event: any) => {
@@ -126,14 +124,20 @@ export const ChatItem: React.FC<ChatItemProps> = ({
   return (
     <div className="relative group flex items-center hover:bg-black/5 p-4 transition w-full">
       <div className="group flex gap-x-2 items-start w-full">
-        <div onClick={onMemberClick} className="cursor-pointer hover:drop-shadow-md transition">
-           {/* @ts-ignore */}
+        <div
+          onClick={onMemberClick}
+          className="cursor-pointer hover:drop-shadow-md transition"
+        >
+          {/* @ts-ignore */}
           <UserAvtar src={member?.profile?.imageurl} />
         </div>
         <div className="flex flex-col w-full">
           <div className="flex items-center gap-x-2">
             <div className="flex items-center">
-              <p onClick={onMemberClick} className="font-semibold text-sm hover:underline cursor-pointer">
+              <p
+                onClick={onMemberClick}
+                className="font-semibold text-sm hover:underline cursor-pointer"
+              >
                 {member.profile.name}
               </p>
               <ActionTooltip label={member.role}>
@@ -224,29 +228,54 @@ export const ChatItem: React.FC<ChatItemProps> = ({
           )}
         </div>
       </div>
-      {canDeleteMessage && (
-        <div className="hidden group-hover:flex items-center gap-x-2 absolute p-1 -top-2 right-5 bg-white dark:bg-zinc-800 border rounded-sm">
-          {canEditMessage && (
-            <ActionTooltip label="Edit">
-              <Edit
-                onClick={() => setIsEditing(true)}
+      <div className="hidden group-hover:flex items-center gap-x-2 absolute p-1 -top-2 right-5 bg-white dark:bg-zinc-800 border rounded-sm">
+        {canDeleteMessage && (
+          <>
+            {canEditMessage && (
+              <ActionTooltip label="Edit">
+                <Edit
+                  onClick={() => setIsEditing(true)}
+                  className="w-4 h-4 text-zinc-500 hover:text-zinc-600 dark:hover:text-zinc-300 cursor-pointer ml-auto transition"
+                />
+              </ActionTooltip>
+            )}
+            <ActionTooltip label="Delete">
+              <Trash
+                onClick={() =>
+                  onOpen("deleteMessage", {
+                    apiUrl: `${socketUrl}/${id}`,
+                    query: socketQuery,
+                  })
+                }
                 className="w-4 h-4 text-zinc-500 hover:text-zinc-600 dark:hover:text-zinc-300 cursor-pointer ml-auto transition"
               />
             </ActionTooltip>
-          )}
-          <ActionTooltip label="Delete">
-            <Trash
-              onClick={() =>
-                onOpen("deleteMessage", {
-                  apiUrl: `${socketUrl}/${id}`,
-                  query: socketQuery,
-                })
-              }
-              className="w-4 h-4 text-zinc-500 hover:text-zinc-600 dark:hover:text-zinc-300 cursor-pointer ml-auto transition"
-            />
-          </ActionTooltip>
-        </div>
-      )}
+          </>
+        )}
+        <ActionTooltip label="Like">
+          <Heart
+            onClick={() =>
+              onOpen("deleteMessage", {
+                apiUrl: `${socketUrl}/${id}`,
+                query: socketQuery,
+              })
+            }
+            className="w-4 h-4 text-zinc-500 hover:text-zinc-600 dark:hover:text-zinc-300 cursor-pointer ml-auto transition"
+          />
+        </ActionTooltip>
+
+        <ActionTooltip label="reply">
+              <Reply
+                onClick={() =>
+                  onOpen("deleteMessage", {
+                    apiUrl: `${socketUrl}/${id}`,
+                    query: socketQuery,
+                  })
+                }
+                className="w-4 h-4 text-zinc-500 hover:text-zinc-600 dark:hover:text-zinc-300 cursor-pointer ml-auto transition"
+              />
+            </ActionTooltip>
+      </div>
     </div>
   );
 };

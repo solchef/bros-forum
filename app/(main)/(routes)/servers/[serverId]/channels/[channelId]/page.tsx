@@ -111,8 +111,8 @@ const ChannelId: React.FC<ChannelIdProps> = ({
 
   useEffect(() => {
     const fetchUserProfile = async () => {
-      const profile = await initialProfile(user);
-      setProfile(profile);
+      const userProfile = await initialProfile(user);
+      setProfile(userProfile);
     };
 
     fetchUserProfile();
@@ -174,6 +174,7 @@ const ChannelId: React.FC<ChannelIdProps> = ({
             socketQuery={{
               channelId: channelData.id,
               serverId: channelData.serverid,
+              user:JSON.stringify(profile)
             }}
             paramKey="channelId"
             paramValue={channelData.id}

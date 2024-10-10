@@ -1,6 +1,5 @@
 "use client";
 
-import { Member, Message, Profile } from "@prisma/client";
 import { ChatWelcome } from "./chat-welcome";
 import { Loader2, ServerCrash } from "lucide-react";
 import { useChatQuery } from "@/hooks/use-chat-query";
@@ -10,6 +9,7 @@ import { format } from "date-fns";
 import { useChatSocket } from "@/hooks/use-chat-socket";
 import { useChatScroll } from "@/hooks/use-chat-scroll";
 import { timeAgo } from "@/lib/utils";
+import { Member, Message, Profile } from "@/lib/types";
 
 type MessageWithMemberWithProfile = Message & {
   member: Member & {
@@ -123,7 +123,7 @@ export const ChatMessages: React.FC<ChatMessagesProps> = ({
                 currentMember={member}
                 member={message.member}
                 content={message.content}
-                fileUrl={message.fileUrl}
+                fileUrl={message.fileurl}
                 deleted={message.deleted}
                 timestamp={timeAgo(message.createdat)}
                 isUpdated={message.updatedat !== message.createdat}

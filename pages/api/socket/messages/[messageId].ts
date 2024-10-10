@@ -3,6 +3,7 @@ import { NextApiResponseServerIo } from "@/types";
 import { currentProfilePages } from "@/lib/current-profile-pages";
 import { supabase } from "@/lib/supabaseClient";
 import { currentProfile } from "@/lib/current-profile";
+import { MemberRole } from "@/lib/types";
 
 export default async function handler(
   req: NextApiRequest,
@@ -12,7 +13,9 @@ export default async function handler(
     return res.status(405).json({ message: "Method not allowed" });
 
   try {
-    const profile = await currentProfile(req);
+    // console.log(JSON.parse(req?.query?.user).id)
+    const profile = await currentProfile(JSON.parse(req?.query?.user));
+    // console.log("profile",profile)
     const { serverId, channelId, messageId } = req.query;
     const { content } = req.body;
 
@@ -24,68 +27,83 @@ export default async function handler(
     if (!messageId)
       return res.status(400).json({ message: "Message id is required" });
 
-    const { data: server } = await supabase
-      .from('server')  // Assuming your table name is 'server'
-      .select('*, member(*)')  // Select all fields from the server and include 'members'
-      .eq('id', serverId)  // Filter for the specific server ID
-      .filter('members.profileId', 'eq', profile.id);  // Filter where members contain the given profile ID
+    let { data: server } = await supabase
+      .from('server')
+      .select('*, member(*)')
+      .eq('id', serverId)
+      .filter('member.profileid', 'eq', profile.id);
 
+    server = server[0]
+
+    // console.log(server)
 
     if (!server) return res.status(404).json({ message: "Server not found" });
 
-    const { data: channel } = await supabase
-      .from('channel')  // Assuming your table name is 'channel'
-      .select('*')      // Select all fields from the 'channel' table
-      .eq('id', channelId)  // Filter by channelId
-      .eq('serverId', server.id);  // Filter by serverId
+    let { data: channel } = await supabase
+      .from('channel')
+      .select('*')
+      .eq('id', channelId)
+      .eq('serverid', serverId);
+
+    channel = channel[0]
 
 
     if (!channel) return res.status(404).json({ message: "Channel not found" });
 
     const member = server?.member.find(
-      (member) => member.profileId === profile.id
+      (member) => member.profileid === profile.id
     );
 
     if (!member) return res.status(401).json({ message: "Unauthorized" });
 
-    const { data: message } = await supabase
-      .from('message')  // Assuming the table is called 'message'
+    let { data: message } = await supabase
+      .from('message')
       .select(`
       *,
       member (
         *,
         profile (*)
       )
-    `)  // Select all fields, and include the 'member' and 'profile' relationships
-      .eq('id', messageId)  // Filter by messageId
-      .eq('channelId', channel.id);  // Filter by channelId
+    `)
+      .eq('id', messageId)
+      .eq('channelid', channelId);
+
+    //   console.log(messageId, channelId)
+
+    message = message[0];
+
 
     if (!message || message.deleted)
       return res.status(404).json({ message: "Message not found" });
 
-    const isMessageOwner = message.memberid === member.id;
+    const isMessageOwner = message.member.profileid === profile.id;
+    // console.log(message.member.profileid,profile.id, isMessageOwner);
+
     const isAdmin = member.role === MemberRole.ADMIN;
     const isModrator = member.role === MemberRole.MODERATOR;
     const canModify = isMessageOwner || isAdmin || isModrator;
 
     if (!canModify) return res.status(401).json({ message: "Unauthorized" });
 
+    // console.log(req.method)
     if (req.method === "DELETE") {
       const { data: message, error } = await supabase
         .from('message')  // Specify the 'message' table
         .update({
-          fileUrl: null,
+          fileurl: null,
           content: "This message has been deleted",
           deleted: true,
         })
-        .eq('id', message.id)  // Filter by message ID
+        .eq('id', messageId)  // Filter by message ID
         .select(`
-    *,  // Select all fields from the 'message' table
-    member (
-      *,  // Select all fields from the 'member' table
-      profile (*)  // Select all fields from the 'profile' table within 'member'
-    )
-  `);
+        *, 
+        member (
+          *,  
+          profile (*)
+        )
+      `);
+
+      // console.log(message, error)
 
     }
 
@@ -98,14 +116,14 @@ export default async function handler(
         .update({
           content: content,  // Update the content with the new value
         })
-        .eq('id', message.id)  // Filter by message ID
+        .eq('id', messageId)  // Filter by message ID
         .select(`
-    *,  // Select all fields from the 'message' table
-    member (
-      *,  // Select all fields from the 'member' table
-      profile (*)  // Select all fields from the 'profile' table within 'member'
-    )
-  `);
+            *, 
+            member (
+              *, 
+              profile (*) 
+            )
+          `);
 
     }
     const updateKey = `chat:${channelId}:messages:update`;

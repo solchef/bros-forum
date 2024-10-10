@@ -32,12 +32,25 @@ export enum ChannelType {
     role: MemberRole;
     profileid: string;
     profile: { name: string }[];
+    createdat:Date;
+    updatedat:Date
   }
 
   export interface Profile {
     id: string;
     name: string;
     userimage: string;
+  }
+
+  export interface Message {
+    id: string;
+    content: string;
+    fileurl:string;
+    deleted:boolean;
+    profileid: string;
+    createdat:Date;
+    updatedat:Date;
+    member:Member
   }
   
   
