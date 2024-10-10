@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import "./globals.css";
 import type { Metadata } from "next";
 import { Open_Sans } from "next/font/google";
@@ -10,6 +10,7 @@ import { QueryProvider } from "@/components/providers/query-provider";
 import { TmaSDKProvider } from "@/components/tma";
 import { TelegramUserProvider } from "@/components/tma/TelegramUserProvider";
 import { MyUser } from "@/components/user";
+import Image from "next/image";
 // import { useInitData } from "@telegram-apps/sdk-react";
 
 const font = Open_Sans({ subsets: ["latin"] });
@@ -27,35 +28,43 @@ export default function RootLayout({
   // const initData = useInitData();
 
   return (
-   
-      <html lang="en">
-        <body className={cn(font.className, "bg-white dark:bg-[#313338]")}>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="dark"
-            enableSystem
-            storageKey="discord-theme"
-          >
-           {/* <MyUser/> */}
-          
-            {/* Uncomment these if you want to use them */}
-            <TmaSDKProvider>
+    <html lang="en">
+      <body className={cn(font.className, "bg-white dark:bg-[#313338]")}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem
+          storageKey="discord-theme"
+        >
+          {/* <MyUser/> */}
+
+          {/* Uncomment these if you want to use them */}
+          <TmaSDKProvider>
             <TelegramUserProvider>
-            <SocketProvider>
-              <ModalProvider />
-               <QueryProvider>
-                {children}
+              <SocketProvider>
+                <ModalProvider />
+                <QueryProvider>
+                  {/* {children} */}
+                  <div className="flex flex-col items-center p-4 justify-center h-screen text-center">
+                    <Image
+                      src="/logo.svg"
+                      height="100"
+                      width="100"
+                      alt="Broscams"
+                    />
+                    <p>
+                      Ongoing Forum update.  will be live in a few hours
+                    </p>
+                  </div>
                 </QueryProvider>
-            </SocketProvider> 
+              </SocketProvider>
             </TelegramUserProvider>
-            </TmaSDKProvider>
-          </ThemeProvider> 
-        </body>
-      </html>
- 
+          </TmaSDKProvider>
+        </ThemeProvider>
+      </body>
+    </html>
   );
 }
-
 
 // "use client"; // Marking this as a client component
 
