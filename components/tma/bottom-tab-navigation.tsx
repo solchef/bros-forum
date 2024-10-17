@@ -130,7 +130,7 @@ export const BottomTabs = () => {
                 {/* Tabs Content */}
                 <Tabs.Content
                   value="home"
-                  className="p-4 flex bg-custom-darker flex-col h-full "
+                  className="p-4 flex bg-custom-darker flex-col h-full"
                 >
                   {loading ? (
                     <p>Loading servers...</p>
@@ -143,13 +143,14 @@ export const BottomTabs = () => {
                         style={{ flexGrow: 1 }}
                       >
                         <p className="font-bold my-4">Servers</p>
-                        <div className="flex flex-wrap justify-between  gap-y-3">
+                        <div className="flex flex-wrap gap-1 justify-start">
                           {servers?.length ? (
-                            servers.map((server) => (
+                            servers.map((server, index) => (
                               <div
                                 key={server.id}
                                 onClick={() => handleServerClick(server.id)}
-                                className="flex flex-col items-center mr-8 justify-center cursor-pointer"
+                                className="flex flex-col items-center justify-center cursor-pointer"
+                                style={{ width: "22%" }} // This ensures 2 items per row
                               >
                                 <div className="h-11 w-11 bg-gray-300 rounded-full flex items-center justify-center mb-2 hover:bg-gray-400">
                                   <img
