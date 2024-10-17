@@ -17,7 +17,7 @@ const Serverchannels = (props: any) => {
   }, [props.filteredChannels]);
 
   return (
-    <div className="fixed top-[3.5rem] left-0 w-full bg-custom-dark z-10">
+    <div className="fixed mx-2 top-[3.5rem] left-0 w-full bg-custom-dark z-10">
       {props.selectedServerId && props.filteredChannels?.length ? (
         <div
           ref={containerRef}

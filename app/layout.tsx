@@ -11,7 +11,7 @@ import { TmaSDKProvider } from "@/components/tma";
 import { TelegramUserProvider } from "@/components/tma/TelegramUserProvider";
 import Image from "next/image";
 import { useState, useEffect } from "react";
-import '../global.css'
+import "../global.css";
 // import { useInitData } from "@telegram-apps/sdk-react";
 
 const font = Open_Sans({ subsets: ["latin"] });
@@ -68,7 +68,21 @@ export default function RootLayout({
               <TelegramUserProvider>
                 <SocketProvider>
                   <ModalProvider />
-                  <QueryProvider>{children}</QueryProvider>
+                  <QueryProvider>
+                    <div className="flex flex-col items-center justify-center h-screen text-white">
+                      <Image
+                        alt="Broscams"
+                        src="/logo.svg"
+                        width={100}
+                        height={100}
+                      />
+                      <p className="mt-4 text-sm text-center">
+                        We are getting ready. An update is in progress.
+                      </p>
+                    </div>
+
+                    {/* {children} */}
+                  </QueryProvider>
                 </SocketProvider>
               </TelegramUserProvider>
             </TmaSDKProvider>
