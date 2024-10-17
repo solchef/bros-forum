@@ -61,6 +61,7 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@supabase/supabase-js";
 import { useTelegramUser } from "@/components/tma/TelegramUserProvider"; // Adjust import path
 import { TmaProviderLoading } from "@/components/tma/tma-provider-loading";
+import { supabase } from "@/lib/supabaseClient";
 
 interface ServerIdPageProps {
   params: {
@@ -69,9 +70,7 @@ interface ServerIdPageProps {
 }
 
 // Initialize Supabase client
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "";
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
+
 
 const ServerIdPage: React.FC<ServerIdPageProps> = ({ params: { serverId } }) => {
   const user = useTelegramUser(); // Get user from Telegram context

@@ -92,6 +92,7 @@ import { supabase } from "@/lib/supabaseClient"; // Ensure Supabase client is co
 import { ChannelType } from "@prisma/client"; // Adjust if you're using different types
 import { useEffect, useState } from "react";
 import { useRouter } from 'next/navigation';
+import { TmaProviderLoading } from "@/components/tma/tma-provider-loading";
 
 interface ChannelIdProps {
   params: {
@@ -151,7 +152,7 @@ const ChannelId: React.FC<ChannelIdProps> = ({
 
   // Handle loading state
   if (loading || !profile) {
-    return <div>Loading...</div>; // Optionally, add a loading spinner or similar UI
+    return <TmaProviderLoading/>; // Optionally, add a loading spinner or similar UI
   }
 
   return (
