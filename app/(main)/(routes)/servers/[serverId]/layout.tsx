@@ -88,7 +88,7 @@ const ServerIdLayout: React.FC<ServerIdLayoutProps> = ({
     return <div>Error loading data or access denied.</div>;
   }
 
-  return (
+  return ( 
     <div className="h-full">
       <div className="hidden md:flex h-full w-60 z-20 flex-col fixed inset-y-0">
         {/* <ServerSidebar serverId={serverId} /> */}

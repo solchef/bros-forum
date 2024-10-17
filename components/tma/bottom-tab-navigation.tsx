@@ -9,8 +9,11 @@ import { Channel, Server } from "@/lib/types";
 import ForumSearch from "./forum-search";
 import ForumMembers from "./forum-members";
 import ForumUserProfile from "./forum-user-profile";
+import { useParams, useRouter } from "next/navigation";
 
 export const BottomTabs = () => {
+  const router = useRouter();
+  const params = useParams();
   const [activeTab, setActiveTab] = useState<string | null>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [servers, setServers] = useState<Server[] | null>(null);
@@ -64,6 +67,8 @@ export const BottomTabs = () => {
       (channel) => channel.serverid === serverId
     );
     setFilteredChannels(filtered || []);
+
+    router.push(`/servers/${serverId}`);
   };
 
   useEffect(() => {
@@ -73,6 +78,8 @@ export const BottomTabs = () => {
   const handleChannelClick = (channelId: string) => {
     // Implement your logic here, e.g., navigating to the channel or displaying more details
     console.log("Channel clicked:", channelId);
+
+    router.push(`/servers/${params?.serverId}/channels/${channelId}`);
   };
 
   return (
@@ -112,7 +119,7 @@ export const BottomTabs = () => {
               {/* Tabs Content */}
               <Tabs.Content
                 value="home"
-                className="p-4 flex bg-custom-dark flex-col h-full"
+                className="p-4 flex bg-custom-darker flex-col h-full "
               >
                 {loading ? (
                   <p>Loading servers...</p>
@@ -120,7 +127,6 @@ export const BottomTabs = () => {
                   <p className="text-red-500">{error}</p>
                 ) : (
                   <>
-                    {/* Channels Section */}
                     <div className="mb-4">
                       {selectedServerId && filteredChannels?.length ? (
                         <div>
@@ -142,12 +148,11 @@ export const BottomTabs = () => {
                       ) : null}
                     </div>
 
-                    {/* Fixed Position for Servers */}
                     <div
                       className="flex flex-col w-full mt-auto fixed bottom-20"
                       style={{ flexGrow: 1 }}
                     >
-                      <p className="font-bold mb-4">Servers</p>
+                      <p className="font-bold my-4">Servers</p>
                       <div className="flex flex-wrap justify-between  gap-y-3">
                         {servers?.length ? (
                           servers.map((server) => (
@@ -156,11 +161,11 @@ export const BottomTabs = () => {
                               onClick={() => handleServerClick(server.id)}
                               className="flex flex-col items-center mr-8 justify-center cursor-pointer"
                             >
-                              <div className="h-12 w-12 bg-gray-300 rounded-full flex items-center justify-center mb-2 hover:bg-gray-400">
+                              <div className="h-11 w-11 bg-gray-300 rounded-full flex items-center justify-center mb-2 hover:bg-gray-400">
                                 <img
                                   src={server.imageurl}
                                   alt={server.name}
-                                  className="h-10 w-10 rounded-full"
+                                  className="h-9 w-9 rounded-full"
                                 />
                               </div>
                               <span className="text-xs text-white">
@@ -203,7 +208,7 @@ export const BottomTabs = () => {
               >
                 <div className="flex flex-col w-full absolute top-10">
                   <p className="font-bold mb-4">Members</p>
-                    <ForumUserProfile/>
+                  <ForumUserProfile />
                 </div>
               </Tabs.Content>
             </>

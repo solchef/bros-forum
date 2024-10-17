@@ -24,7 +24,7 @@ const SetupPage = () => {
       const { data: server, error } = await supabase
         .from('server')
         .select('*')
-        // .eq('member.profileId', profile.id)
+        // .eq('member.profileId', profile.id)+
         .single();
 
       if (error) {

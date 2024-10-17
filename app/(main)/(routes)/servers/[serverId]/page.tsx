@@ -135,10 +135,7 @@ const ServerIdPage: React.FC<ServerIdPageProps> = ({ params: { serverId } }) => 
       const server = serverData.find(srv => srv.name === "Home") // Get the first server object
       const channels = server?.channel; // Access the channels array
 
-      // console.log(channels)
-      
-      // Ensure channels exist
-      if (channels && channels.length > 0) {
+       if (channels && channels.length > 0) {
         const generalChannel = channels.find((channel) => channel.name === "general");
       
         if (generalChannel) {

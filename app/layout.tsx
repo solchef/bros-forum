@@ -44,8 +44,9 @@ export default function RootLayout({
               <SocketProvider>
                 <ModalProvider />
                 <QueryProvider>
-                  {/* {children} */}
-                  <div className="flex flex-col items-center p-4 justify-center h-screen text-center">
+                  {children}
+                  {/* on forum update status pause this and display this message */}
+                  {/* <div className="flex flex-col items-center p-4 justify-center h-screen text-center">
                     <Image
                       src="/logo.svg"
                       height="100"
@@ -55,7 +56,7 @@ export default function RootLayout({
                     <p>
                       Ongoing Forum update.  will be live in a few hours
                     </p>
-                  </div>
+                  </div> */}
                 </QueryProvider>
               </SocketProvider>
             </TelegramUserProvider>

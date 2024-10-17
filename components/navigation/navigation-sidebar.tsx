@@ -7,10 +7,7 @@ import React, { useEffect, useState } from 'react';
 import { ModeToggle } from '../mode-toggle';
 import { NavigationAction } from './navigation-action';
 import { NavigationItem } from './navigation-item';
-
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "";
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
+import { supabase } from '@/lib/supabaseClient';
 
 const NavigationSidebar = () => {
   const [servers, setServers] = useState();
