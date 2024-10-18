@@ -66,6 +66,7 @@ export const ChatItem: React.FC<ChatItemProps> = ({
   socketQuery,
 }) => {
   const [isEditing, setIsEditing] = useState(false);
+  const [messageLikes, setMessageLikes] = usestate(0);
   const params = useParams();
   const router = useRouter();
 
@@ -110,10 +111,17 @@ export const ChatItem: React.FC<ChatItemProps> = ({
     }
   };
 
+  const getMessagelikes = async() => {
+    const {data:messageLikes} = await supabase.from('likes').select('*').eq('messageid', id);
+
+    setMessageLikes(messageLikes?.length);
+  }
+
   useEffect(() => {
     form.reset({
       content,
     });
+    getMessagelikes();
   }, [content]);
 
   const fileType = fileUrl?.split(".").pop();
@@ -141,7 +149,7 @@ export const ChatItem: React.FC<ChatItemProps> = ({
     //   return;
     // }
 
-    console.log(existingLike)
+    // console.log(existingLike)
   
     if (existingLike) {
       // If the record exists, delete it
@@ -305,6 +313,7 @@ export const ChatItem: React.FC<ChatItemProps> = ({
           </>
         )}
         <ActionTooltip label="Like">
+          <span>({messageLikes})</span>
           <Heart
             onClick={() => onLike(id)}
             className="w-4 h-4 text-zinc-500 hover:text-zinc-600 dark:hover:text-zinc-300 cursor-pointer ml-auto transition"
