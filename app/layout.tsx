@@ -69,7 +69,7 @@ export default function RootLayout({
                 <SocketProvider>
                   <ModalProvider />
                   <QueryProvider>
-                    <div className="flex flex-col items-center justify-center h-screen text-white">
+                    {/* <div className="flex flex-col items-center justify-center h-screen text-white">
                       <Image
                         alt="Broscams"
                         src="/logo.svg"
@@ -79,9 +79,8 @@ export default function RootLayout({
                       <p className="mt-4 text-sm text-center">
                         We are getting ready. An update is in progress.
                       </p>
-                    </div>
-
-                    {/* {children} */}
+                    </div> */}
+                    {children}
                   </QueryProvider>
                 </SocketProvider>
               </TelegramUserProvider>

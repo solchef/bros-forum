@@ -17,7 +17,7 @@ const Serverchannels = (props: any) => {
   }, [props.filteredChannels]);
 
   return (
-    <div className="fixed mx-2 top-[3.5rem] left-0 w-full bg-custom-dark z-10">
+    <div className="fixed mx-2 top-[2.5rem] left-0 w-full bg-custom-dark z-10 py-2">
       {props.selectedServerId && props.filteredChannels?.length ? (
         <div
           ref={containerRef}
@@ -36,7 +36,7 @@ const Serverchannels = (props: any) => {
           </div>
         </div>
       ) : props.selectedServerId && !props.filteredChannels?.length ? (
-        <p className="px-4">No channels available for this server.</p>
+        <p className="px-4"></p>
       ) : null}
     </div>
   );

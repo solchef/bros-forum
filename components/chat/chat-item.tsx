@@ -228,7 +228,7 @@ export const ChatItem: React.FC<ChatItemProps> = ({
           )}
         </div>
       </div>
-      <div className="hidden group-hover:flex items-center gap-x-2 absolute p-1 -top-2 right-5 bg-white dark:bg-zinc-800 border rounded-sm">
+      <div className="flex group-hover:flex items-center gap-x-2 absolute p-1 -top-2 right-5 bg-white dark:bg-zinc-800 border rounded-sm">
         {canDeleteMessage && (
           <>
             {canEditMessage && (

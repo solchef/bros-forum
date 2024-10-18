@@ -19,7 +19,7 @@ export const BottomTabs = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [servers, setServers] = useState<Server[] | null>(null);
   const [channels, setChannels] = useState<Channel[] | null>(null);
-  const [selectedServerId, setSelectedServerId] = useState<string | null>(null);
+  const [selectedServerId, setSelectedServerId] = useState<string | "befaa09a-4f37-47ab-88a4-8b147a88e160">("befaa09a-4f37-47ab-88a4-8b147a88e160");
   const [filteredChannels, setFilteredChannels] = useState<Channel[] | null>(
     null
   );
@@ -38,7 +38,7 @@ export const BottomTabs = () => {
 
   const closeTab = () => {
     setIsOpen(false);
-    setActiveTab(null); // Close the tab
+    setActiveTab(null); 
   };
 
   const getServersAndChannels = async () => {
@@ -59,6 +59,7 @@ export const BottomTabs = () => {
 
     setServers(serverList);
     setChannels(channelList);
+    setInitialChannelList();
     setLoading(false);
   };
 
@@ -72,8 +73,17 @@ export const BottomTabs = () => {
     router.push(`/servers/${serverId}`);
   };
 
+  const setInitialChannelList = () => {
+    const filtered = channels?.filter(
+      (channel) => channel.serverid === selectedServerId
+    );
+    setFilteredChannels(filtered || []);
+
+  }
+
   useEffect(() => {
     getServersAndChannels();
+
   }, []);
 
   const handleChannelClick = (channelId: string) => {
@@ -114,7 +124,7 @@ export const BottomTabs = () => {
           className={`fixed left-0 right-0  rounded-t-lg z-10 transition-transform duration-500 ease-in-out ${
             isOpen ? "translate-y-0" : "translate-y-full"
           }`}
-          style={{ height: "66vh", bottom: isOpen ? 0 : "-100%" }}
+          style={{ height: "42vh", bottom: isOpen ? 0 : "-100%" }}
         >
           <div className="relative h-full">
             {activeTab && (
@@ -248,8 +258,8 @@ export const BottomTabs = () => {
             onClick={() => toggleTab("settings")}
             aria-label="Settings"
           >
-            <Settings className="h-6 w-6" />
-            <span className="text-xs mt-1">Settings</span>
+            <User className="h-6 w-6" />
+            <span className="text-xs mt-1">Account</span>
           </Tabs.Trigger>
         </Tabs.List>
       </Tabs.Root>
