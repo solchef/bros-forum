@@ -66,7 +66,8 @@ export const ChatItem: React.FC<ChatItemProps> = ({
   socketQuery,
 }) => {
   const [isEditing, setIsEditing] = useState(false);
-  const [messageLikes, setMessageLikes] = usestate(0);
+  const [messageLikes, setMessageLikes] = useState(0);
+  const [userHasLike, setUserHasLike] = useState(false)
   const params = useParams();
   const router = useRouter();
 
@@ -111,11 +112,14 @@ export const ChatItem: React.FC<ChatItemProps> = ({
     }
   };
 
-  const getMessagelikes = async() => {
-    const {data:messageLikes} = await supabase.from('likes').select('*').eq('messageid', id);
-
-    setMessageLikes(messageLikes?.length);
-  }
+  const getMessagelikes = async () => {
+    const { data: messageLikes } = await supabase
+      .from("likes")
+      .select("*")
+      .eq("messageid", id);
+    setMessageLikes(messageLikes ? messageLikes.length : 0);
+    setUserHasLike(messageLikes?.find(like => like.profileid === member.profile.id))
+  };
 
   useEffect(() => {
     form.reset({
@@ -139,25 +143,25 @@ export const ChatItem: React.FC<ChatItemProps> = ({
   const onLike = async (id: any) => {
     const { data: existingLike, error: fetchError } = await supabase
       .from("likes")
-      .select('*')
+      .select("*")
       .eq("profileid", member.profile.id)
       .eq("messageid", id)
-      .single(); // Fetch a single record if it exists
-  
+      .single(); 
+
     // if (fetchError) {
     //   console.error("Error fetching like:", fetchError);
     //   return;
     // }
 
     // console.log(existingLike)
-  
+
     if (existingLike) {
       // If the record exists, delete it
       const { error: deleteError } = await supabase
         .from("likes")
         .delete()
         .eq("id", existingLike.id); // Assuming there is an "id" column as the primary key
-  
+
       if (deleteError) {
         console.error("Error deleting like:", deleteError);
       } else {
@@ -169,7 +173,7 @@ export const ChatItem: React.FC<ChatItemProps> = ({
         .from("likes")
         .insert([{ profileid: member.profile.id, messageid: id }])
         .select();
-  
+
       if (insertError) {
         console.error("Error inserting like:", insertError);
       } else {
@@ -177,7 +181,6 @@ export const ChatItem: React.FC<ChatItemProps> = ({
       }
     }
   };
-  
 
   // console.log(timestamp)
 
@@ -313,23 +316,38 @@ export const ChatItem: React.FC<ChatItemProps> = ({
           </>
         )}
         <ActionTooltip label="Like">
-          <span>({messageLikes})</span>
-          <Heart
-            onClick={() => onLike(id)}
-            className="w-4 h-4 text-zinc-500 hover:text-zinc-600 dark:hover:text-zinc-300 cursor-pointer ml-auto transition"
-          />
+          <>
+            <span
+              className={`text-xs text-gray-500 align-super mb-2`}
+              style={{ marginLeft: "0.25rem" }}
+            >
+              ({messageLikes})
+            </span>
+            <Heart
+              onClick={() => onLike(id)}
+              className={`w-4 h-4  ${userHasLike ? 'text-red-500' : 'text-zinc-500'} hover:text-zinc-600 dark:hover:text-zinc-300 cursor-pointer ml-auto transition`}
+            />
+          </>
         </ActionTooltip>
 
         <ActionTooltip label="reply">
-          <Reply
-            onClick={() =>
-              onOpen("deleteMessage", {
-                apiUrl: `${socketUrl}/${id}`,
-                query: socketQuery,
-              })
-            }
-            className="w-4 h-4 text-zinc-500 hover:text-zinc-600 dark:hover:text-zinc-300 cursor-pointer ml-auto transition"
-          />
+          <>
+            <span
+              className="text-xs text-gray-500 align-super mb-2"
+              style={{ marginLeft: "0.25rem" }}
+            >
+              ({messageLikes})
+            </span>
+            <Reply
+              onClick={() =>
+                onOpen("deleteMessage", {
+                  apiUrl: `${socketUrl}/${id}`,
+                  query: socketQuery,
+                })
+              }
+              className="w-4 h-4 text-zinc-500 hover:text-zinc-600 dark:hover:text-zinc-300 cursor-pointer ml-auto transition"
+            />
+          </>
         </ActionTooltip>
       </div>
     </div>
