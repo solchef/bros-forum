@@ -5,7 +5,15 @@ import qs from "query-string";
 import { Member, MemberRole, Profile } from "@prisma/client";
 import { UserAvtar } from "@/components/user-avtar";
 import { ActionTooltip } from "../action-tooltip";
-import { Edit, FileIcon, Heart, Reply, ShieldAlert, ShieldCheck, Trash } from "lucide-react";
+import {
+  Edit,
+  FileIcon,
+  Heart,
+  Reply,
+  ShieldAlert,
+  ShieldCheck,
+  Trash,
+} from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
@@ -18,6 +26,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useModal } from "@/hooks/use-modal-store";
 import { useParams, useRouter } from "next/navigation";
+import { supabase } from "@/lib/supabaseClient";
 
 interface ChatItemProps {
   id: string;
@@ -118,6 +127,49 @@ export const ChatItem: React.FC<ChatItemProps> = ({
   const isImage = !isPDF && fileUrl;
 
   const { onOpen } = useModal();
+
+  const onLike = async (id: any) => {
+    const { data: existingLike, error: fetchError } = await supabase
+      .from("likes")
+      .select('*')
+      .eq("profileid", member.profile.id)
+      .eq("messageid", id)
+      .single(); // Fetch a single record if it exists
+  
+    // if (fetchError) {
+    //   console.error("Error fetching like:", fetchError);
+    //   return;
+    // }
+
+    console.log(existingLike)
+  
+    if (existingLike) {
+      // If the record exists, delete it
+      const { error: deleteError } = await supabase
+        .from("likes")
+        .delete()
+        .eq("id", existingLike.id); // Assuming there is an "id" column as the primary key
+  
+      if (deleteError) {
+        console.error("Error deleting like:", deleteError);
+      } else {
+        console.log("Like removed:", existingLike);
+      }
+    } else {
+      // If the record doesn't exist, insert a new like
+      const { data: newLike, error: insertError } = await supabase
+        .from("likes")
+        .insert([{ profileid: member.profile.id, messageid: id }])
+        .select();
+  
+      if (insertError) {
+        console.error("Error inserting like:", insertError);
+      } else {
+        console.log("Like added:", newLike);
+      }
+    }
+  };
+  
 
   // console.log(timestamp)
 
@@ -254,6 +306,13 @@ export const ChatItem: React.FC<ChatItemProps> = ({
         )}
         <ActionTooltip label="Like">
           <Heart
+            onClick={() => onLike(id)}
+            className="w-4 h-4 text-zinc-500 hover:text-zinc-600 dark:hover:text-zinc-300 cursor-pointer ml-auto transition"
+          />
+        </ActionTooltip>
+
+        <ActionTooltip label="reply">
+          <Reply
             onClick={() =>
               onOpen("deleteMessage", {
                 apiUrl: `${socketUrl}/${id}`,
@@ -263,18 +322,6 @@ export const ChatItem: React.FC<ChatItemProps> = ({
             className="w-4 h-4 text-zinc-500 hover:text-zinc-600 dark:hover:text-zinc-300 cursor-pointer ml-auto transition"
           />
         </ActionTooltip>
-
-        <ActionTooltip label="reply">
-              <Reply
-                onClick={() =>
-                  onOpen("deleteMessage", {
-                    apiUrl: `${socketUrl}/${id}`,
-                    query: socketQuery,
-                  })
-                }
-                className="w-4 h-4 text-zinc-500 hover:text-zinc-600 dark:hover:text-zinc-300 cursor-pointer ml-auto transition"
-              />
-            </ActionTooltip>
       </div>
     </div>
   );
