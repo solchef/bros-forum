@@ -68,7 +68,7 @@
 
 "use client";
 
-import React, { createContext, useContext, ReactNode, useState, useEffect } from "react";
+import React, { createContext, useContext, ReactNode } from "react";
 import { useInitData } from "@telegram-apps/sdk-react";
 
 // Define the user type based on what you expect from the Telegram API
@@ -92,31 +92,20 @@ interface TelegramUserProviderProps {
   children: ReactNode;
 }
 
-export const TelegramUserProvider: React.FC<TelegramUserProviderProps> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
-  const [isClient, setIsClient] = useState(false);
+export const TelegramUserProvider: React.FC<TelegramUserProviderProps> = ({
+  children,
+}) => {
+  const initData = useInitData(); // Must be called here directly, no conditions
+  const tgUser = initData?.user || null;
 
-  useEffect(() => {
-    setIsClient(true); // Ensure this only runs on the client side
-  }, []);
+  const user = {
+    id: tgUser?.id?.toString() || '',
+    username: tgUser?.username || '',
+    // firstName: tgUser?.first_name || '',
+    // lastName: tgUser?.last_name || '',
+  };
 
-  useEffect(() => {
-    if (isClient) {
-      try {
-        const initData = useInitData(); // Safely call the hook only on the client
-        if (initData?.user) {
-          setUser({
-            id: initData.user.id?.toString(),
-            username: initData.user.username || '',
-            // firstName: initData.user.first_name || '',
-            // lastName: initData.user.last_name || '',
-          });
-        }
-      } catch (error) {
-        console.error("Error with useInitData:", error);
-      }
-    }
-  }, [isClient]);
+  console.log(user); // For debugging
 
   return (
     <TelegramUserContext.Provider value={{ user }}>
