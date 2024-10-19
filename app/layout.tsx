@@ -8,7 +8,7 @@ import { ModalProvider } from "@/components/providers/modal-provider";
 import { SocketProvider } from "@/components/providers/socket-provider";
 import { QueryProvider } from "@/components/providers/query-provider";
 import { TmaSDKProvider } from "@/components/tma";
-import { TelegramUserProvider } from "@/components/tma/TelegramUserProvider";
+import { DynamicTelegramUserProvider } from "@/components/tma/TelegramUserProvider";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import "../global.css";
@@ -65,7 +65,7 @@ export default function RootLayout({
         >
           <ErrorBoundary>
             <TmaSDKProvider>
-              <TelegramUserProvider>
+              <DynamicTelegramUserProvider>
                 <SocketProvider>
                   <ModalProvider />
                   <QueryProvider>
@@ -83,7 +83,7 @@ export default function RootLayout({
                     {children}
                   </QueryProvider>
                 </SocketProvider>
-              </TelegramUserProvider>
+              </DynamicTelegramUserProvider>
             </TmaSDKProvider>
           </ErrorBoundary>
         </ThemeProvider>
