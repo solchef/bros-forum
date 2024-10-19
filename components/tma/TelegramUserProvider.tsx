@@ -7,8 +7,8 @@ import { useInitData } from "@telegram-apps/sdk-react";
 interface User {
   id?: string;
   username?: string;
-  firstName?: string;
-  lastName?: string;
+  first_name?: string;
+  last_name?: string;
 }
 
 // Define the context type
@@ -40,8 +40,8 @@ export const TelegramUserProvider: React.FC<TelegramUserProviderProps> = ({
   const user = {
     id: tgUser?.id.toString(),
     username: tgUser?.username || '',
-    firstName: tgUser?.first_name || '',
-    lastName: tgUser?.last_name || '',
+    // firstName: tgUser?.first_name || '',
+    // lastName: tgUser?.last_name || '',
   };
 
   console.log(user)
