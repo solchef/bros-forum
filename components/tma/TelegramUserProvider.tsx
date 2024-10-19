@@ -65,9 +65,8 @@
 // };
 
 
-
-"use client";
-
+// Import dynamic from Next.js to disable SSR for this component
+import dynamic from 'next/dynamic';
 import React, { createContext, useContext, ReactNode } from "react";
 import { useInitData } from "@telegram-apps/sdk-react";
 
@@ -92,10 +91,8 @@ interface TelegramUserProviderProps {
   children: ReactNode;
 }
 
-export const TelegramUserProvider: React.FC<TelegramUserProviderProps> = ({
-  children,
-}) => {
-  const initData = useInitData(); // Must be called here directly, no conditions
+const TelegramUserProvider: React.FC<TelegramUserProviderProps> = ({ children }) => {
+  const initData = useInitData(); // Hook should only be called in the client side
   const tgUser = initData?.user || null;
 
   const user = {
@@ -114,6 +111,11 @@ export const TelegramUserProvider: React.FC<TelegramUserProviderProps> = ({
   );
 };
 
+// Use dynamic to disable SSR for this component
+export const DynamicTelegramUserProvider = dynamic(() => Promise.resolve(TelegramUserProvider), {
+  ssr: false, // Disable server-side rendering
+});
+
 // Custom hook for consuming the context easily
 export const useTelegramUser = () => {
   const context = useContext(TelegramUserContext);
@@ -124,3 +126,4 @@ export const useTelegramUser = () => {
   }
   return context.user;
 };
+
