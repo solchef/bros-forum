@@ -38,11 +38,13 @@ export const TelegramUserProvider: React.FC<TelegramUserProviderProps> = ({
   //     lastName:"chege"
   //  }
   const user = {
-    id: tgUser.id,
-    username: tgUser.username,
-    firstName: tgUser.first_name,
-    lastName: tgUser.last_name,
+    id: tgUser?.id.toString(),
+    username: tgUser?.username || '',
+    firstName: tgUser?.first_name || '',
+    lastName: tgUser?.last_name || '',
   };
+
+  console.log(user)
 
   return (
     <TelegramUserContext.Provider value={{ user }}>
