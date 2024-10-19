@@ -1,5 +1,5 @@
- "use client"
- 
+"use client";
+
 import React, { createContext, useContext, ReactNode } from "react";
 import { useInitData } from "@telegram-apps/sdk-react";
 
@@ -24,17 +24,25 @@ interface TelegramUserProviderProps {
   children: ReactNode;
 }
 
-export const TelegramUserProvider: React.FC<TelegramUserProviderProps> = ({ children }) => {
-  // const initData = useInitData();
-  // const user = initData?.user || null; 
-  // const user = initData?.user || null;
-   const user = {
-      id:'6686793326',
-      username: "Jjmjpo",
-      firstName: "james",
-      lastName:"chege"
+export const TelegramUserProvider: React.FC<TelegramUserProviderProps> = ({
+  children,
+}) => {
+  const initData = useInitData();
+  const tgUser = initData?.user || null;
 
-   }
+  // console.log(user)
+  //  const user = {
+  //     id:'6686793326',
+  //     username: "Jjmjpo",
+  //     firstName: "james",
+  //     lastName:"chege"
+  //  }
+  const user = {
+    id: tgUser.id,
+    username: tgUser.username,
+    firstName: tgUser.first_name,
+    lastName: tgUser.last_name,
+  };
 
   return (
     <TelegramUserContext.Provider value={{ user }}>
@@ -47,7 +55,9 @@ export const TelegramUserProvider: React.FC<TelegramUserProviderProps> = ({ chil
 export const useTelegramUser = () => {
   const context = useContext(TelegramUserContext);
   if (context === null) {
-    throw new Error("useTelegramUser must be used within a TelegramUserProvider");
+    throw new Error(
+      "useTelegramUser must be used within a TelegramUserProvider"
+    );
   }
   return context.user;
 };
