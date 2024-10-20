@@ -53,4 +53,12 @@ export enum ChannelType {
     member:Member
   }
   
+
+  export interface UserProfile {
+    id:String;
+    username: String;
+    first_name:String;
+    last_name:String;
+    profileimage:String;
+  }
   

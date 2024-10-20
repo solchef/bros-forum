@@ -124,13 +124,13 @@ export const BottomTabs = () => {
           className={`fixed left-0 right-0  rounded-t-lg z-10 transition-transform duration-500 ease-in-out ${
             isOpen ? "translate-y-0" : "translate-y-full"
           }`}
-          style={{ height: "42vh", bottom: isOpen ? 0 : "-100%" }}
+          style={{ height: "46vh", bottom: isOpen ? 0 : "-100%" }}
         >
           <div className="relative h-full">
             {activeTab && (
               <>
                 <button
-                  className="absolute top-3 right-3 text-white"
+                  className="absolute top-3 right-3 text-white z-10"
                   onClick={closeTab}
                   aria-label="Close Tab"
                 >
@@ -208,7 +208,7 @@ export const BottomTabs = () => {
                   className="p-4 flex bg-custom-dark flex-col h-full rounded-xl shadow-md"
                 >
                   <div className="flex flex-col w-full absolute top-10">
-                    <p className="font-bold mb-4">Members</p>
+                    <p className="font-bold mb-4">Account</p>
                     <ForumUserProfile />
                   </div>
                 </Tabs.Content>

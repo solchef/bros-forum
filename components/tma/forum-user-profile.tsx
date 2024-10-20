@@ -1,9 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import * as Avatar from "@radix-ui/react-avatar";
+import { useTelegramUser } from "./TelegramUserProvider";
+import { UserProfile } from "@/lib/types";
+import { Badge, Shield } from "lucide-react";
 
 const ForumUserProfile = () => {
+  const user = useTelegramUser();
   const [isEditing, setIsEditing] = useState(false);
-  const [username, setUsername] = useState("John Doe");
+  const [userProfile, setUserProfile] = useState<UserProfile>();
   const [bio, setBio] = useState("Hello! This is my bio.");
   const [userImage, setUserImage] = useState("https://via.placeholder.com/150");
 
@@ -16,26 +20,32 @@ const ForumUserProfile = () => {
     setIsEditing(false);
   };
 
+  useEffect(() => {
+    setUserProfile(user);
+  }, []);
+
   return (
     <div className="max-w-md   rounded-lg shadow-md space-y-6">
       {/* User Avatar */}
       <div className="flex items-center space-x-4">
         <Avatar.Root className="inline-flex items-center justify-center overflow-hidden w-20 h-20 rounded-full border border-gray-200">
           <Avatar.Image
-            src={userImage}
-            alt={username}
+            src={userProfile?.profileimage}
+            alt={userProfile?.username}
             className="w-full h-full object-cover"
           />
           <Avatar.Fallback
             delayMs={600}
             className="bg-gray-300 text-white flex items-center justify-center w-full h-full"
           >
-            {username[0]}
+            {userProfile?.username}
           </Avatar.Fallback>
         </Avatar.Root>
         <div>
-          <h2 className="text-2xl font-bold">{username}</h2>
-          <p className="text-sm text-gray-500">{bio}</p>
+          <h2 className="text-lg font-bold">{userProfile?.username}</h2>
+          <div className="text-md text-gray-500 flex my-2">
+          <span><Shield /></span> {" "} Public Bros
+          </div>
         </div>
       </div>
 
@@ -44,7 +54,7 @@ const ForumUserProfile = () => {
         <div className="space-y-4">
           <input
             type="text"
-            value={username}
+            value={userProfile?.username || userProfile?.first_name || userProfile?.last_name}
             onChange={(e) => setUsername(e.target.value)}
             className="border border-gray-300 rounded-md p-2 w-full"
             placeholder="Enter your username"
