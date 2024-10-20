@@ -91,7 +91,7 @@ export default async function handler(
         .from('message')  // Specify the 'message' table
         .update({
           fileurl: null,
-          content: "This message has been deleted",
+          content: "This thread has been deleted",
           deleted: true,
         })
         .eq('id', messageId)  // Filter by message ID

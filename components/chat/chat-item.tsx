@@ -67,7 +67,7 @@ export const ChatItem: React.FC<ChatItemProps> = ({
 }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [messageLikes, setMessageLikes] = useState(0);
-  const [userHasLike, setUserHasLike] = useState(false)
+  const [userHasLike, setUserHasLike] = useState(false);
   const params = useParams();
   const router = useRouter();
 
@@ -118,7 +118,9 @@ export const ChatItem: React.FC<ChatItemProps> = ({
       .select("*")
       .eq("messageid", id);
     setMessageLikes(messageLikes ? messageLikes.length : 0);
-    setUserHasLike(messageLikes?.find(like => like.profileid === member.profile.id))
+    setUserHasLike(
+      messageLikes?.find((like) => like.profileid === member.profile.id)
+    );
   };
 
   useEffect(() => {
@@ -146,7 +148,7 @@ export const ChatItem: React.FC<ChatItemProps> = ({
       .select("*")
       .eq("profileid", member.profile.id)
       .eq("messageid", id)
-      .single(); 
+      .single();
 
     // if (fetchError) {
     //   console.error("Error fetching like:", fetchError);
@@ -154,7 +156,6 @@ export const ChatItem: React.FC<ChatItemProps> = ({
     // }
 
     // console.log(existingLike)
-
     if (existingLike) {
       // If the record exists, delete it
       const { error: deleteError } = await supabase
@@ -165,6 +166,8 @@ export const ChatItem: React.FC<ChatItemProps> = ({
       if (deleteError) {
         console.error("Error deleting like:", deleteError);
       } else {
+        setMessageLikes((prev) => prev - 1);
+        setUserHasLike(false);
         console.log("Like removed:", existingLike);
       }
     } else {
@@ -177,12 +180,12 @@ export const ChatItem: React.FC<ChatItemProps> = ({
       if (insertError) {
         console.error("Error inserting like:", insertError);
       } else {
+        setMessageLikes((prev) => prev + 1);
+        setUserHasLike(true);
         console.log("Like added:", newLike);
       }
     }
   };
-
-  // console.log(timestamp)
 
   return (
     <div className="relative group flex items-center hover:bg-black/5 p-4 transition w-full">
@@ -291,19 +294,58 @@ export const ChatItem: React.FC<ChatItemProps> = ({
           )}
         </div>
       </div>
-      <div className="flex group-hover:flex items-center gap-x-2 absolute p-1 -top-2 right-5 bg-white dark:bg-zinc-800 border rounded-sm">
-        {canDeleteMessage && (
-          <>
-            {canEditMessage && (
-              <ActionTooltip label="Edit">
-                <Edit
-                  onClick={() => setIsEditing(true)}
+      {!deleted && (
+        <div className="flex group-hover:flex items-center gap-x-2 absolute p-1 -top-2 right-5 bg-white dark:bg-zinc-800  rounded-sm">
+          {canDeleteMessage && (
+            <>
+              {canEditMessage && (
+                <ActionTooltip label="Edit">
+                  <Edit
+                    onClick={() => setIsEditing(true)}
+                    className="w-4 h-4 text-zinc-500 hover:text-zinc-600 dark:hover:text-zinc-300 cursor-pointer ml-auto transition"
+                  />
+                </ActionTooltip>
+              )}
+              <ActionTooltip label="Delete">
+                <Trash
+                  onClick={() =>
+                    onOpen("deleteMessage", {
+                      apiUrl: `${socketUrl}/${id}`,
+                      query: socketQuery,
+                    })
+                  }
                   className="w-4 h-4 text-zinc-500 hover:text-zinc-600 dark:hover:text-zinc-300 cursor-pointer ml-auto transition"
                 />
               </ActionTooltip>
-            )}
-            <ActionTooltip label="Delete">
-              <Trash
+            </>
+          )}
+
+          <ActionTooltip label="Like">
+            <>
+              <span
+                className={`text-xs text-gray-500 align-super mb-2`}
+                style={{ marginLeft: "0.25rem" }}
+              >
+                ({messageLikes})
+              </span>
+              <Heart
+                onClick={() => onLike(id)}
+                className={`w-4 h-4  ${
+                  userHasLike ? "text-red-500" : "text-zinc-500"
+                } hover:text-zinc-600 dark:hover:text-zinc-300 cursor-pointer ml-auto transition`}
+              />
+            </>
+          </ActionTooltip>
+
+          <ActionTooltip label="reply">
+            <>
+              <span
+                className="text-xs text-gray-500 align-super mb-2"
+                style={{ marginLeft: "0.25rem" }}
+              >
+                ({messageLikes})
+              </span>
+              <Reply
                 onClick={() =>
                   onOpen("deleteMessage", {
                     apiUrl: `${socketUrl}/${id}`,
@@ -312,44 +354,10 @@ export const ChatItem: React.FC<ChatItemProps> = ({
                 }
                 className="w-4 h-4 text-zinc-500 hover:text-zinc-600 dark:hover:text-zinc-300 cursor-pointer ml-auto transition"
               />
-            </ActionTooltip>
-          </>
-        )}
-        <ActionTooltip label="Like">
-          <>
-            <span
-              className={`text-xs text-gray-500 align-super mb-2`}
-              style={{ marginLeft: "0.25rem" }}
-            >
-              ({messageLikes})
-            </span>
-            <Heart
-              onClick={() => onLike(id)}
-              className={`w-4 h-4  ${userHasLike ? 'text-red-500' : 'text-zinc-500'} hover:text-zinc-600 dark:hover:text-zinc-300 cursor-pointer ml-auto transition`}
-            />
-          </>
-        </ActionTooltip>
-
-        <ActionTooltip label="reply">
-          <>
-            <span
-              className="text-xs text-gray-500 align-super mb-2"
-              style={{ marginLeft: "0.25rem" }}
-            >
-              ({messageLikes})
-            </span>
-            <Reply
-              onClick={() =>
-                onOpen("deleteMessage", {
-                  apiUrl: `${socketUrl}/${id}`,
-                  query: socketQuery,
-                })
-              }
-              className="w-4 h-4 text-zinc-500 hover:text-zinc-600 dark:hover:text-zinc-300 cursor-pointer ml-auto transition"
-            />
-          </>
-        </ActionTooltip>
-      </div>
+            </>
+          </ActionTooltip>
+        </div>
+      )}
     </div>
   );
 };
