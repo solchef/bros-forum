@@ -108,7 +108,7 @@ export const BottomTabs = () => {
         {/* Backdrop for modal-like effect */}
         {isOpen && (
           <div
-            className="fixed inset-0 bg-opacity-50 z-10"
+            className="fixed inset-0 "
             onClick={closeTab}
           />
         )}
@@ -187,7 +187,7 @@ export const BottomTabs = () => {
                   value="search"
                   className="p-4 flex bg-custom-dark flex-col h-full"
                 >
-                  <div className="flex flex-col w-full absolute top-10">
+                  <div className="flex flex-col w-full absolute top-5">
                     <p className="font-bold mb-4">Search</p>
                     <ForumSearch />
                   </div>
@@ -197,8 +197,8 @@ export const BottomTabs = () => {
                   value="profile"
                   className="p-4 flex bg-custom-dark flex-col h-full rounded-xl shadow-md"
                 >
-                  <div className="flex flex-col w-full absolute top-10">
-                    <p className="font-bold mb-4">Members</p>
+                  <div className="flex flex-col w-full absolute top-5">
+                    <p className="font-bold mb-6">Members</p>
                     <ForumMembers />
                   </div>
                 </Tabs.Content>
@@ -207,8 +207,8 @@ export const BottomTabs = () => {
                   value="settings"
                   className="p-4 flex bg-custom-dark flex-col h-full rounded-xl shadow-md"
                 >
-                  <div className="flex flex-col w-full absolute top-10">
-                    <p className="font-bold mb-4">Account</p>
+                  <div className="flex flex-col w-full absolute top-5">
+                    <p className="font-bold mb-6">Account</p>
                     <ForumUserProfile />
                   </div>
                 </Tabs.Content>
@@ -248,6 +248,7 @@ export const BottomTabs = () => {
             onClick={() => toggleTab("profile")}
             aria-label="Profile"
           >
+            
             <Users className="h-6 w-6" />
             <span className="text-xs mt-1">Members</span>
           </Tabs.Trigger>

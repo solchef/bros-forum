@@ -19,32 +19,33 @@ const ForumMembers = () => {
   }, []);
 
   return (
-    <div className=" max-w-md space-y-4">
+    <div className="flex flex-col w-full mt-auto absolute bottom-20 top-10">
 
       {/* Scrollable Container */}
-      <div className="max-h-80 overflow-y-auto space-y-4">
-        <ul className="space-y-4">
+      <div className="max-h-40 overflow-y-auto space-y-4">
+        <ul className="space-y-2 flex flex-row flex-wrap items-start gap-4">
           {members?.map((member) => (
-            <li key={member.id} className="flex items-center space-x-4">
+            <li key={member.id} className="flex flex-col items-center w-24">
               {/* Avatar from Radix UI */}
-              <Avatar.Root className="inline-flex items-center justify-center overflow-hidden w-12 h-12 rounded-full border border-gray-200">
-                <Avatar.Image
-                  src={member.userimage}
-                  alt={member.name}
-                  className="w-full h-full object-cover"
-                />
-                <Avatar.Fallback
-                  delayMs={600}
-                  className="bg-gray-300 text-white flex items-center justify-center w-full h-full"
-                >
-                  {member.name[0]}
-                </Avatar.Fallback>
-              </Avatar.Root>
+              <div>
+                <Avatar.Root className="inline-flex items-center justify-center overflow-hidden w-10 h-10 rounded-full border border-gray-200">
+                  <Avatar.Image
+                    src={member.userimage}
+                    alt={member.name}
+                    className="w-full h-full object-cover"
+                  />
+                  <Avatar.Fallback
+                    delayMs={600}
+                    className="bg-gray-300 text-white flex items-center justify-center w-full h-full"
+                  >
+                    {member.name[0]}
+                  </Avatar.Fallback>
+                </Avatar.Root>
+              </div>
 
               {/* Member Info */}
-              <div className="flex-1">
-                <h3 className="text-lg font-semibold">{member.name}</h3>
-                {/* Add additional info here */}
+              <div className="mt-2">
+                <h6 className="text-sm font-semibold">{member.name}</h6>
               </div>
             </li>
           ))}
