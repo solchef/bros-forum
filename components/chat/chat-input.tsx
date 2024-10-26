@@ -80,11 +80,11 @@ export const ChatInput: React.FC<ChatInputProps> = ({
                       type === "conversation" ? "" : "#"
                     }${name}`}
                     className="
-                      px-14 py-6 bg-zinc-200/90 dark:bg-zinc-700/75 
+                      px-8 py-3 bg-zinc-200/90 dark:bg-zinc-700/75 
                       border-none focus-visible:ring-0 focus-visible:ring-offset-0 
                       text-zinc-600 dark:text-zinc-200 resize-none
                     "
-                    rows={2}
+                    rows={1}
                     {...field}
                     onKeyDown={(e) => {
                       if (e.key === "Enter" && !e.shiftKey) {
@@ -92,6 +92,7 @@ export const ChatInput: React.FC<ChatInputProps> = ({
                         form.handleSubmit(onSubmit)(); // Call the send function
                       }
                     }}
+                    style={{width:"100%"}}
                   />
 
                   <div className="absolute top-8 right-8">
