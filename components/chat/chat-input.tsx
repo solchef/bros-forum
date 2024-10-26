@@ -74,7 +74,6 @@ export const ChatInput: React.FC<ChatInputProps> = ({
                   >
                     <Plus className="h-5 w-5 text-white dark:text-[#313338]" />
                   </button>
-
                   <textarea
                     disabled={isLoading}
                     placeholder={`Message ${

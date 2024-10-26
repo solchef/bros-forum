@@ -244,12 +244,14 @@ export const ChatItem: React.FC<ChatItemProps> = ({
           )}
 
           {!fileUrl && !isEditing && (
-            <p
+            <div
               className={cn(
                 "text-sm text-zinc-600 dark:text-zinc-300",
                 deleted &&
                   "italic text-zinc-500 dark:text-zinc-400 text-xs mt-1"
               )}
+
+              style={{ whiteSpace: "pre-line" }}
             >
               {content}
               {isUpdated && !deleted && (
@@ -257,7 +259,7 @@ export const ChatItem: React.FC<ChatItemProps> = ({
                   (edited)
                 </span>
               )}
-            </p>
+            </div>
           )}
           {!fileUrl && isEditing && (
             <Form {...form}>
