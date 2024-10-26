@@ -55,7 +55,7 @@ const ForumUserProfile = () => {
     
 
       {/* Settings Section */}
-      <div className="space-y-4">
+      {/* <div className="space-y-4">
         <div className="flex space-x-4">
           <button
             onClick={handleEditToggle}
@@ -90,7 +90,7 @@ const ForumUserProfile = () => {
           />
         </div>
       )}
-      </div>
+      </div> */}
     </div>
   );
 };
