@@ -1,17 +1,12 @@
-"use client";
-
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-
-import { Form, FormField, FormControl, FormItem } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Plus, Smile } from "lucide-react";
-
+import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import qs from "query-string";
-import { useModal } from "@/hooks/use-modal-store";
+import { Form, FormField, FormControl, FormItem } from "@/components/ui/form";
+import { Plus } from "lucide-react";
 import { EmojiPicker } from "@/components/emoji-picker";
+import { useModal } from "@/hooks/use-modal-store";
 
 interface ChatInputProps {
   apiUrl: string;
@@ -50,10 +45,9 @@ export const ChatInput: React.FC<ChatInputProps> = ({
         query,
       });
 
-      // Pass the member.id as a header in the request
       await axios.post(url, values, {
         headers: {
-          "x-user-id": member.id, // Include the member ID here
+          "x-user-id": member.id,
         },
       });
 
@@ -76,16 +70,10 @@ export const ChatInput: React.FC<ChatInputProps> = ({
                   <button
                     type="button"
                     onClick={() => onOpen("messageFile", { apiUrl, query })}
-                    className="absolute top-7 left-8 h-[24] w-[24] bg-zinc-500 dark:bg-zinc-400 hover:bg-zinc-600 dark:hover:bg-zinc-300 transition rounded-full p-1 flex items-center justify-center"
+                    className="absolute top-7 left-8 h-6 w-6 bg-zinc-500 dark:bg-zinc-400 hover:bg-zinc-600 dark:hover:bg-zinc-300 transition rounded-full p-1 flex items-center justify-center"
                   >
-                    <Plus className="h-6 w-6 text-white dark:text-[#313338]" />
+                    <Plus className="h-5 w-5 text-white dark:text-[#313338]" />
                   </button>
-                  {/* <Input
-                    disabled={isLoading}
-                    className="px-14 py-6 bg-zinc-200/90 dark:bg-zinc-700/75 border-none border-0 focus-visible:ring-0 focus-visible:ring-offset-0 text-zinc-600 dark:text-zinc-200"
-                    placeholder={`Message ${type === "conversation" ? '' : "#"}${name}`}
-                    {...field}
-                  /> */}
 
                   <textarea
                     disabled={isLoading}
@@ -93,19 +81,20 @@ export const ChatInput: React.FC<ChatInputProps> = ({
                       type === "conversation" ? "" : "#"
                     }${name}`}
                     className="
-    px-14 py-6 bg-zinc-200/90 dark:bg-zinc-700/75 
-    border-none focus-visible:ring-0 focus-visible:ring-offset-0 
-    text-zinc-600 dark:text-zinc-200 resize-none
-  "
-                    rows={1}
+                      px-14 py-6 bg-zinc-200/90 dark:bg-zinc-700/75 
+                      border-none focus-visible:ring-0 focus-visible:ring-offset-0 
+                      text-zinc-600 dark:text-zinc-200 resize-none
+                    "
+                    rows={2}
                     {...field}
                     onKeyDown={(e) => {
                       if (e.key === "Enter" && !e.shiftKey) {
                         e.preventDefault(); // Prevent newline
-                        form.handleSubmit(onSubmit); // Call the send function
+                        form.handleSubmit(onSubmit)(); // Call the send function
                       }
                     }}
                   />
+
                   <div className="absolute top-8 right-8">
                     <EmojiPicker
                       onChange={(emoji: string) =>
