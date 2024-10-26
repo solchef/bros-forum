@@ -80,15 +80,37 @@ export const ChatInput: React.FC<ChatInputProps> = ({
                   >
                     <Plus className="h-6 w-6 text-white dark:text-[#313338]" />
                   </button>
-                  <textarea
+                  {/* <Input
                     disabled={isLoading}
                     className="px-14 py-6 bg-zinc-200/90 dark:bg-zinc-700/75 border-none border-0 focus-visible:ring-0 focus-visible:ring-offset-0 text-zinc-600 dark:text-zinc-200"
                     placeholder={`Message ${type === "conversation" ? '' : "#"}${name}`}
                     {...field}
+                  /> */}
+
+                  <textarea
+                    disabled={isLoading}
+                    placeholder={`Message ${
+                      type === "conversation" ? "" : "#"
+                    }${name}`}
+                    className="
+    px-14 py-6 bg-zinc-200/90 dark:bg-zinc-700/75 
+    border-none focus-visible:ring-0 focus-visible:ring-offset-0 
+    text-zinc-600 dark:text-zinc-200 resize-none
+  "
+                    rows={6}
+                    {...field}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" && !e.shiftKey) {
+                        e.preventDefault(); // Prevent newline
+                        form.handleSubmit(onSubmit) // Call the send function
+                      }
+                    }}
                   />
                   <div className="absolute top-8 right-8">
-                    <EmojiPicker 
-                      onChange={(emoji: string) => field.onChange(`${field.value} ${emoji}`)}
+                    <EmojiPicker
+                      onChange={(emoji: string) =>
+                        field.onChange(`${field.value} ${emoji}`)
+                      }
                     />
                   </div>
                 </div>
