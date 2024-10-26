@@ -97,12 +97,12 @@ export const ChatInput: React.FC<ChatInputProps> = ({
     border-none focus-visible:ring-0 focus-visible:ring-offset-0 
     text-zinc-600 dark:text-zinc-200 resize-none
   "
-                    rows={6}
+                    rows={1}
                     {...field}
                     onKeyDown={(e) => {
                       if (e.key === "Enter" && !e.shiftKey) {
                         e.preventDefault(); // Prevent newline
-                        form.handleSubmit(onSubmit) // Call the send function
+                        form.handleSubmit(onSubmit); // Call the send function
                       }
                     }}
                   />
