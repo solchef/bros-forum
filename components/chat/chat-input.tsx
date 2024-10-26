@@ -80,7 +80,7 @@ export const ChatInput: React.FC<ChatInputProps> = ({
                       type === "conversation" ? "" : "#"
                     }${name}`}
                     className="
-                      px-8 py-3 bg-zinc-200/90 dark:bg-zinc-700/75 
+                      px-10 py-3 bg-zinc-200/90 dark:bg-zinc-700/75 
                       border-none focus-visible:ring-0 focus-visible:ring-offset-0 
                       text-zinc-600 dark:text-zinc-200 resize-none
                     "
